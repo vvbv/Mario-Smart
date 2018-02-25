@@ -1,0 +1,43 @@
+# Pikachu
+#
+# ARSimple 2018
+#
+# N nombre
+# P Percepción
+# P sensor_superior sensor_izquierdo sensor_inferior sersor_derecho Estoy_en_objetivo accion
+#
+# Las acciones posibles son avanzar: A(Arriba), I(Izquierda), D(Derecha), X(Abajo), F(Finalizar), H(Ahogado)
+
+N Pikachu
+P 0 0 0 0 FALSE X
+P 0 0 0 0 TRUE F
+P 0 0 0 1 FALSE I
+P 0 0 0 1 TRUE F
+P 0 0 1 0 FALSE I
+P 0 0 1 0 TRUE F
+P 0 0 1 1 FALSE I
+P 0 0 1 1 TRUE F
+P 0 1 0 0 FALSE D
+P 0 1 0 0 TRUE F
+P 0 1 0 1 FALSE A
+P 0 1 0 1 TRUE F
+P 0 1 1 0 FALSE A
+P 0 1 1 0 TRUE F
+P 0 1 1 1 FALSE A
+P 0 1 1 1 TRUE F
+P 1 0 0 0 FALSE X
+P 1 0 0 0 TRUE F
+P 1 0 0 1 FALSE X
+P 1 0 0 1 TRUE F
+P 1 0 1 0 FALSE D
+P 1 0 1 0 TRUE F
+P 1 0 1 1 FALSE I
+P 1 0 1 1 TRUE F
+P 1 1 0 0 FALSE D
+P 1 1 0 0 TRUE F
+P 1 1 0 1 FALSE X
+P 1 1 0 1 TRUE F
+P 1 1 1 0 FALSE D
+P 1 1 1 0 TRUE F
+P 1 1 1 1 FALSE H
+P 1 1 1 1 TRUE F
