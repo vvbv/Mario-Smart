@@ -114,11 +114,39 @@ std::vector<int> Controlador_entorno::get_pos_entorno_derecha( int pos_actual[2]
 
 std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( int pos[2] ){
     std::vector < std::string > informacion;
-    std::string arriba = this->entorno.get_mapa()[ pos[0] - 1 ][ pos[1] ] ;
-    std::string izquierda = this->entorno.get_mapa()[ pos[0] ][ pos[1] - 2 ] ;
-    std::string abajo = this->entorno.get_mapa()[ pos[0] + 1 ][ pos[1] - 1 ] ;
-    std::string derecha = this->entorno.get_mapa()[ pos[0] ][ pos[1] ] ;
-    std::string actual = this->entorno.get_mapa()[ pos[0] ][ pos[1] - 1 ] ;
+
+    std::string arriba, izquierda, abajo, derecha, actual = "";
+    
+        
+        if( (( pos[0] - 1 ) > -1) ){
+            arriba = this->entorno.get_mapa()[ pos[0] - 1 ][ pos[1] ] ;
+        }else{
+            arriba = "1";
+        }
+        
+        if( ( pos[1] - 2 ) > -1 ){
+            izquierda = this->entorno.get_mapa()[ pos[0] ][ pos[1] - 2 ] ;
+        }else{
+            izquierda = "1";
+        }
+
+        if(( ( pos[1] - 1 ) > -1 ) && ( ( pos[0] + 1  ) < this->entorno.get_mapa().size() - 1 ) ){
+            abajo = this->entorno.get_mapa()[ pos[0] + 1 ][ pos[1] - 1 ] ;
+        }else{
+            abajo = "1";
+        }     
+
+        if(( ( pos[0] ) > -1 )   ){
+            derecha = this->entorno.get_mapa()[ pos[0] ][ pos[1] ] ;
+        }else{
+            derecha = "1";
+        }     
+
+        actual = this->entorno.get_mapa()[ pos[0] - 1 ][ pos[1] - 1 ];
+    
+    
+    
+
     informacion.push_back( arriba );
     informacion.push_back( izquierda );
     informacion.push_back( abajo );

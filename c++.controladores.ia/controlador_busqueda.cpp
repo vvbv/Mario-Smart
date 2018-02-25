@@ -110,7 +110,7 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
     int indice_controlador = -1;
 
     while ( info_casilla != "5" ){
-        std::cout << "Tupla controladora: " << std::to_string( indice_controlador ) << " Arbol size " << arbol_expansiones.size() << std::endl;
+        //std::cout << "Tupla controladora: " << std::to_string( indice_controlador ) << " Arbol.size() " << arbol_expansiones.size() << std::endl;
         /*if( indice_controlador == 5 ){
             break;
         }*/
@@ -133,13 +133,15 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
             pos_tupla_controladora[0] = std::get<1>(arbol_expansiones[indice_controlador])[0];
             pos_tupla_controladora[1] = std::get<1>(arbol_expansiones[indice_controlador])[1];
 
-            std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << std::endl;
-            break;
+            info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_tupla_controladora );
+
+            std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << std::endl;
+            
             int pos_superior[2];
             int pos_lateral_izquierda[2];
             int pos_inferior[2];
             int pos_lateral_derecha[2];
-
+            
             pos_superior[0] = this->c_entorno.get_pos_entorno_arriba( pos_tupla_controladora )[0];
             pos_superior[1] = this->c_entorno.get_pos_entorno_arriba( pos_tupla_controladora )[1];
             pos_lateral_izquierda[0] = this->c_entorno.get_pos_entorno_izquierda( pos_tupla_controladora )[0];
@@ -150,7 +152,10 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
             pos_lateral_derecha[1] = this->c_entorno.get_pos_entorno_derecha( pos_tupla_controladora )[1];
 
             std::vector < std::string > info_entorno_casilla_superior = this->c_entorno.get_informacion_entorno_pos( entorno, pos_superior );
+            
             std::vector < std::string > info_entorno_casilla_lateral_izquierda = this->c_entorno.get_informacion_entorno_pos( entorno, pos_lateral_izquierda );
+            
+            
             std::vector < std::string > info_entorno_casilla_inferior = this->c_entorno.get_informacion_entorno_pos( entorno, pos_inferior );
             std::vector < std::string > info_entorno_casilla_lateral_derecha = this->c_entorno.get_informacion_entorno_pos( entorno, pos_lateral_derecha );
             
@@ -205,6 +210,8 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
 
             indice_controlador++;
         }
+
+        
     }    
 
     std::cout << "Fin" << std::endl;
