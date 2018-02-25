@@ -97,12 +97,36 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
     pos_actual[1] = entorno.get_posicion_inicial()[1]; 
     std::cout << pos_actual[0] << " -- " << pos_actual[1] << std::endl;
-    std::vector < std::map <int, int, std::string > > arbol_expansiones;
-    for(int i = 0; i < this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual ).size(); i++ ){
-        std::cout << this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual )[i] << "  ";
-    }
-
     
+    /*for(int i = 0; i < this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual ).size(); i++ ){
+        std::cout << this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual )[i] << "  ";
+    }*/
+
+    std::vector < std::tuple < int, int*, std::string > > arbol_expansiones;
+
+    std::vector < std::string > info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual );
+    std::string info_casilla = info_entorno[5];
+
+    int indice_controlador = 0;
+
+    while ( info_casilla != "5" ){
+
+        if( indice_controlador == 0 ){
+            std::tuple  <int, int*, std::string > expansion;
+            int *pos_apuntada = new int[2]();
+
+            pos_apuntada[0] = pos_actual[0];
+            pos_apuntada[1] = pos_actual[1];
+
+            expansion = std::make_tuple( 0, pos_apuntada, info_casilla );
+
+            arbol_expansiones.push_back( expansion );
+        }else{
+
+
+            indice_controlador++;
+        }
+    }    
 
 };
 

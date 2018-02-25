@@ -84,6 +84,34 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( En
     return this->get_informacion_entorno_pos( pos );
 };
 
+std::vector<int> Controlador_entorno::get_pos_entorno_arriba( int pos_actual[2] ){
+    std::vector <int> pos;
+    pos.push_back( pos_actual[0] );
+    pos.push_back( pos_actual[1] );
+    return pos;
+};
+
+std::vector<int> Controlador_entorno::get_pos_entorno_izquierda( int pos_actual[2] ){
+    std::vector <int> pos;
+    pos.push_back( pos_actual[0] );
+    pos.push_back( pos_actual[1] - 1 );
+    return pos;
+};
+
+std::vector<int> Controlador_entorno::get_pos_entorno_abajo( int pos_actual[2] ){
+    std::vector <int> pos;
+    pos.push_back( pos_actual[0] + 1 );
+    pos.push_back( pos_actual[1] );
+    return pos;
+};
+
+std::vector<int> Controlador_entorno::get_pos_entorno_derecha( int pos_actual[2] ){
+    std::vector <int> pos;
+    pos.push_back( pos_actual[0] );
+    pos.push_back( pos_actual[1] + 1 );
+    return pos;
+};
+
 std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( int pos[2] ){
     std::vector < std::string > informacion;
     std::string arriba = this->entorno.get_mapa()[ pos[0] - 1 ][ pos[1] ] ;

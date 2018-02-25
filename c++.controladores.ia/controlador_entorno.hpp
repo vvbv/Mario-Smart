@@ -22,6 +22,10 @@
             void pintar_pos_inicial();
             std::vector < std::string > get_informacion_entorno_pos( Entorno entorno, int pos[2] );
             std::vector < std::string > get_informacion_entorno_pos( int pos[2] );
+            std::vector<int> get_pos_entorno_arriba( int pos_actual[2] );
+            std::vector<int> get_pos_entorno_izquierda( int pos_actual[2] );
+            std::vector<int> get_pos_entorno_abajo( int pos_actual[2] );
+            std::vector<int> get_pos_entorno_derecha( int pos_actual[2] );
     };
 
 #endif
