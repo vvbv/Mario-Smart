@@ -122,7 +122,7 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
 
             arbol_expansiones.push_back( expansion );
         }else{
-
+            
 
             indice_controlador++;
         }
