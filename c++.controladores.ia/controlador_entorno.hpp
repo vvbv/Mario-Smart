@@ -18,6 +18,8 @@
             Entorno cargar_entorno( std::string ubicacion );
             void pintar_entorno( Entorno entorno );
             void pintar_entorno();
+            void pintar_pos_inicial( Entorno entorno );
+            void pintar_pos_inicial();
             std::vector < std::string > get_informacion_entorno_pos( Entorno entorno, int pos[2] );
             std::vector < std::string > get_informacion_entorno_pos( int pos[2] );
     };

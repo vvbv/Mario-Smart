@@ -74,6 +74,11 @@ void Controlador_entorno::pintar_entorno( Entorno entorno ){
     this->pintar_entorno();
 }
 
+void Controlador_entorno::pintar_pos_inicial( Entorno entorno ){    
+    this->entorno = entorno;
+    this->pintar_pos_inicial();
+}
+ 
 std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( Entorno entorno, int pos[2] ){
     this->entorno = entorno;
     return this->get_informacion_entorno_pos( pos );
@@ -82,10 +87,10 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( En
 std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( int pos[2] ){
     std::vector < std::string > informacion;
     std::string arriba = this->entorno.get_mapa()[ pos[0] - 1 ][ pos[1] ] ;
-    std::string izquierda = this->entorno.get_mapa()[ pos[0] ][ pos[1] -1 ] ;
-    std::string abajo = this->entorno.get_mapa()[ pos[0] + 1 ][ pos[1] ] ;
-    std::string derecha = this->entorno.get_mapa()[ pos[0] ][ pos[1] + 1 ] ;
-    std::string actual = this->entorno.get_mapa()[ pos[0]][ pos[1] ] ;
+    std::string izquierda = this->entorno.get_mapa()[ pos[0] ][ pos[1] - 2 ] ;
+    std::string abajo = this->entorno.get_mapa()[ pos[0] + 1 ][ pos[1] - 1 ] ;
+    std::string derecha = this->entorno.get_mapa()[ pos[0] ][ pos[1] ] ;
+    std::string actual = this->entorno.get_mapa()[ pos[0] ][ pos[1] - 1 ] ;
     informacion.push_back( arriba );
     informacion.push_back( izquierda );
     informacion.push_back( abajo );
@@ -94,12 +99,15 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( in
     return informacion;
 };
 
-void Controlador_entorno::pintar_entorno(){    
+void Controlador_entorno::pintar_pos_inicial(){    
     Entorno entorno = this->entorno;
     std::vector<int> posicion_inicial = entorno.get_posicion_inicial();
-    
     std::cout << "Punto de partida: Fila => " << ( posicion_inicial[0] + 1 ); 
     std::cout << " :: Columna => " << posicion_inicial[1] << std::endl << std::endl;
+}
+
+void Controlador_entorno::pintar_entorno(){    
+    Entorno entorno = this->entorno;
     for(int i = 0; i < entorno.get_mapa().size(); i++){
         for(int j = 0; j < entorno.get_mapa()[i].size(); j++){
             std::cout << '|' << entorno.get_mapa()[i][j];
