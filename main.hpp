@@ -2,7 +2,7 @@
 #define MAIN_HPP_
 
 #include <iostream>
-#include "c++.controladores.ia/controlador_general.cpp"
+#include "c++.controladores.ia/controlador_busqueda.cpp"
 
     class Main{
         public:

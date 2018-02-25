@@ -6,7 +6,7 @@
     #include "controlador_agente.cpp"
     
 
-    class Controlador_general{
+    class Controlador_busqueda{
         private:
             Entorno entorno;
             Agente agente;
@@ -15,9 +15,9 @@
             
 
         public:
-            Controlador_general( std::string ubicacion_entorno );
-            Controlador_general( std::string ubicacion_entorno, std::string ubicacion_agente );
-            ~Controlador_general();
+            Controlador_busqueda( std::string ubicacion_entorno );
+            Controlador_busqueda( std::string ubicacion_entorno, std::string ubicacion_agente );
+            ~Controlador_busqueda();
             Controlador_entorno get_controlador_entorno();
             Controlador_agente get_controlador_agente();
             Entorno get_entorno();
