@@ -143,9 +143,6 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( in
         }     
 
         actual = this->entorno.get_mapa()[ pos[0] - 1 ][ pos[1] - 1 ];
-    
-    
-    
 
     informacion.push_back( arriba );
     informacion.push_back( izquierda );
