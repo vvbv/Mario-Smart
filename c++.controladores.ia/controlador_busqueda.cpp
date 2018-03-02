@@ -96,7 +96,7 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
     pos_actual[1] = entorno.get_posicion_inicial()[1]; 
-    std::cout << pos_actual[0] << " -- " << pos_actual[1] << std::endl;
+    //std::cout << pos_actual[0] << " -- " << pos_actual[1] << std::endl;
     
     /*for(int i = 0; i < this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual ).size(); i++ ){
         std::cout << this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual )[i] << "  ";
