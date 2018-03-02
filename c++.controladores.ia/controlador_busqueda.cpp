@@ -102,6 +102,7 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
         std::cout << this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual )[i] << "  ";
     }*/
 
+    std::tuple < int, int*, std::string, std::string > ultima_tupla;
     std::vector < std::tuple < int, int*, std::string, std::string > > arbol_expansiones;
 
     std::vector < std::string > info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual );
@@ -126,6 +127,7 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
             expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root" );
 
             arbol_expansiones.push_back( expansion );
+            ultima_tupla = expansion;
             indice_controlador++;
         }else{
 
@@ -134,8 +136,10 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
             pos_tupla_controladora[1] = std::get<1>(arbol_expansiones[indice_controlador])[1];
 
             info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_tupla_controladora );
+            info_casilla = info_entorno[4];
 
             std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << std::endl;
+            std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
             
             int pos_superior[2];
             int pos_lateral_izquierda[2];
@@ -152,10 +156,7 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
             pos_lateral_derecha[1] = this->c_entorno.get_pos_entorno_derecha( pos_tupla_controladora )[1];
 
             std::vector < std::string > info_entorno_casilla_superior = this->c_entorno.get_informacion_entorno_pos( entorno, pos_superior );
-            
             std::vector < std::string > info_entorno_casilla_lateral_izquierda = this->c_entorno.get_informacion_entorno_pos( entorno, pos_lateral_izquierda );
-            
-            
             std::vector < std::string > info_entorno_casilla_inferior = this->c_entorno.get_informacion_entorno_pos( entorno, pos_inferior );
             std::vector < std::string > info_entorno_casilla_lateral_derecha = this->c_entorno.get_informacion_entorno_pos( entorno, pos_lateral_derecha );
             
@@ -167,8 +168,10 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
                 pos_apuntada[1] = pos_superior[1];
 
                 expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba" );
-
-                arbol_expansiones.push_back( expansion );
+                if ( ultima_tupla != expansion ){
+                    arbol_expansiones.push_back( expansion );
+                    ultima_tupla = expansion;
+                }
             }
 
             if( info_entorno_casilla_lateral_izquierda[4] != "1" ){
@@ -179,8 +182,10 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
                 pos_apuntada[1] = pos_lateral_izquierda[1];
 
                 expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda" );
-
-                arbol_expansiones.push_back( expansion );
+                if ( ultima_tupla != expansion ){
+                    arbol_expansiones.push_back( expansion );
+                    ultima_tupla = expansion;
+                }
             }
 
             if( info_entorno_casilla_inferior[4] != "1" ){
@@ -191,8 +196,10 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
                 pos_apuntada[1] = pos_inferior[1];
 
                 expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo" );
-
-                arbol_expansiones.push_back( expansion );
+                if ( ultima_tupla != expansion ){
+                    arbol_expansiones.push_back( expansion );
+                    ultima_tupla = expansion;
+                }
             }
 
             if( info_entorno_casilla_lateral_derecha[4] != "1" ){
@@ -203,8 +210,10 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
                 pos_apuntada[1] = pos_lateral_derecha[1];
 
                 expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha" );
-
-                arbol_expansiones.push_back( expansion );
+                if ( ultima_tupla != expansion ){
+                    arbol_expansiones.push_back( expansion );
+                    ultima_tupla = expansion;
+                }
             }
 
 

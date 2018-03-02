@@ -8,7 +8,7 @@ int main( int argc, const char* argv[] ){
     c_general.get_controlador_entorno().pintar_pos_inicial();
     c_general.get_controlador_entorno().pintar_entorno();
 
-    std::cout << c_general.get_entorno().get_mapa().size() << std::endl;
+    //std::cout << c_general.get_entorno().get_mapa().size() << std::endl;
 
     c_general.jugar_busqueda_no_informada_amplitud( c_general.get_entorno(), c_general.get_agente() );
     /*int pos[2];

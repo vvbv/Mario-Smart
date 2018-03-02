@@ -42,7 +42,7 @@ Entorno Controlador_entorno::cargar_entorno( std::string ubicacion ){
             }else if( substring == "2" ){
                 substrings_definicion_mapa.push_back( substring );
                 posicion_inicial_tmp[0] = ( i + 1 );
-                posicion_inicial_tmp[1] = ( substrings_definicion_mapa.size() );
+                posicion_inicial_tmp[1] = ( substrings_definicion_mapa.size() - 1 );
             }
         }
         substrings_definicion_mapa.push_back( "1" ); // Lado derecho de la frontera
@@ -86,7 +86,7 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( En
 
 std::vector<int> Controlador_entorno::get_pos_entorno_arriba( int pos_actual[2] ){
     std::vector <int> pos;
-    pos.push_back( pos_actual[0] );
+    pos.push_back( pos_actual[0] - 1);
     pos.push_back( pos_actual[1] );
     return pos;
 };
@@ -125,24 +125,24 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( in
         }
         
         if( ( pos[1] - 2 ) > -1 ){
-            izquierda = this->entorno.get_mapa()[ pos[0] ][ pos[1] - 2 ] ;
+            izquierda = this->entorno.get_mapa()[ pos[0] ][ pos[1] - 1 ] ;
         }else{
             izquierda = "1";
         }
 
         if(( ( pos[1] - 1 ) > -1 ) && ( ( pos[0] + 1  ) < this->entorno.get_mapa().size() - 1 ) ){
-            abajo = this->entorno.get_mapa()[ pos[0] + 1 ][ pos[1] - 1 ] ;
+            abajo = this->entorno.get_mapa()[ pos[0] + 1 ][ pos[1] ] ;
         }else{
             abajo = "1";
         }     
 
         if(( ( pos[0] ) > -1 )   ){
-            derecha = this->entorno.get_mapa()[ pos[0] ][ pos[1] ] ;
+            derecha = this->entorno.get_mapa()[ pos[0] ][ pos[1] + 1 ] ;
         }else{
             derecha = "1";
         }     
 
-        actual = this->entorno.get_mapa()[ pos[0] - 1 ][ pos[1] - 1 ];
+        actual = this->entorno.get_mapa()[ pos[0] ][ pos[1] ];
 
     informacion.push_back( arriba );
     informacion.push_back( izquierda );
@@ -156,7 +156,7 @@ void Controlador_entorno::pintar_pos_inicial(){
     Entorno entorno = this->entorno;
     std::vector<int> posicion_inicial = entorno.get_posicion_inicial();
     std::cout << "Punto de partida: Fila => " << ( posicion_inicial[0] + 1 ); 
-    std::cout << " :: Columna => " << posicion_inicial[1] << std::endl << std::endl;
+    std::cout << " :: Columna => " << posicion_inicial[1] + 1 << std::endl << std::endl;
 }
 
 void Controlador_entorno::pintar_entorno(){    
