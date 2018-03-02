@@ -223,7 +223,7 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
         
     }    
 
-    std::cout << "Fin" << std::endl;
+    std::cout << std::endl << "Encontrado!!" << std::endl;
 
 };
 
