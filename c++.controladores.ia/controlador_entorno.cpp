@@ -124,19 +124,19 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( in
             arriba = "1";
         }
         
-        if( ( pos[1] - 2 ) > -1 ){
+        if( ( pos[1] - 1 ) > -1 ){
             izquierda = this->entorno.get_mapa()[ pos[0] ][ pos[1] - 1 ] ;
         }else{
             izquierda = "1";
         }
 
-        if(( ( pos[1] - 1 ) > -1 ) && ( ( pos[0] + 1  ) < this->entorno.get_mapa().size() - 1 ) ){
+        if(( ( pos[0] + 1  ) < this->entorno.get_mapa().size() - 1 ) ){
             abajo = this->entorno.get_mapa()[ pos[0] + 1 ][ pos[1] ] ;
         }else{
             abajo = "1";
         }     
 
-        if(( ( pos[0] ) > -1 )   ){
+        if(( ( pos[1] + 1 ) < this->entorno.get_mapa()[0].size() - 1 )   ){
             derecha = this->entorno.get_mapa()[ pos[0] ][ pos[1] + 1 ] ;
         }else{
             derecha = "1";
