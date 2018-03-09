@@ -1,0 +1,48 @@
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>MARIO SMART</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+  		<div class="container-fluid">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+		        <span class="sr-only"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="#">MARIO SMART</a>
+		    </div>
+
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+		      <ul class="nav navbar-nav">
+		        <li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Busquedas No Informadas <span class="caret"></span></a>
+		          <ul class="dropdown-menu" role="menu">
+		            <li><a href="">Busqueda por amplitud</a></li>
+		            <li><a href="">Busqueda por costo fijo</a></li>
+		            <li><a href="">Busqueda preferente en profundidad</a></li>
+		          </ul>
+		        </li>
+		        <li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Busquedas Informadas <span class="caret"></span></a>
+		          <ul class="dropdown-menu" role="menu">
+		            <li><a href="">Busqueda Ávara</a></li>
+		            <li><a href="">Busqueda A*</a></li>
+		          </ul>
+		        </li>
+		      </ul> 
+            </div>
+		  </div>
+		</nav>
+	<footer class="navbar-fixed-bottom">
+        Autor: Camilo José Cruz Rivera - <b>cjcruzrivera</b><br>
+	</footer>
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+	</body>
+	</html>
