@@ -96,37 +96,32 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
     pos_actual[1] = entorno.get_posicion_inicial()[1]; 
-    //std::cout << pos_actual[0] << " -- " << pos_actual[1] << std::endl;
-    
-    /*for(int i = 0; i < this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual ).size(); i++ ){
-        std::cout << this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual )[i] << "  ";
-    }*/
 
-    std::tuple < int, int*, std::string, std::string, std::uintptr_t, int > ultima_tupla;
-    std::vector < std::tuple < int, int*, std::string, std::string, std::uintptr_t, int > > arbol_expansiones;
+    std::tuple < int, int*, std::string, std::string, int > ultima_tupla;
+    std::vector < std::tuple < int, int*, std::string, std::string, int > > arbol_expansiones;
 
     std::vector < std::string > info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual );
     std::string info_casilla = info_entorno[4];
 
     int indice_controlador = -1;
-
     int pos_meta_vector = -1;
+    int numero_nodos_expandidos = 0;
 
-    while ( info_casilla != "5" ){
-        //std::cout << "Tupla controladora: " << std::to_string( indice_controlador ) << " Arbol.size() " << arbol_expansiones.size() << std::endl;
-        /*if( indice_controlador == 5 ){
-            break;
-        }*/
+    auto inicio = std::chrono::system_clock::now();
+    std::time_t tiempo_inicio = std::chrono::system_clock::to_time_t( inicio );
+    std::cout << std::endl << "Inició: " << std::ctime(&tiempo_inicio) << std::endl;
+
+    while( info_casilla != "5" ){
 
         if( indice_controlador == -1 ){
             // index, posicion, información de la casilla, operador aplicado( nodo root, operador root )
-            std::tuple  < int, int*, std::string, std::string, std::uintptr_t, int > expansion;
+            std::tuple  < int, int*, std::string, std::string, int > expansion;
             int *pos_apuntada = new int[2]();
 
             pos_apuntada[0] = pos_actual[0];
             pos_apuntada[1] = pos_actual[1];
 
-            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", std::uintptr_t( &expansion ), 0 );
+            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0 );
 
             arbol_expansiones.push_back( expansion );
             ultima_tupla = expansion;
@@ -140,9 +135,12 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
 
             info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_tupla_controladora );
             info_casilla = info_entorno[4];
+
             if( info_casilla == "5" ){
                 pos_meta_vector = arbol_expansiones.size();
             }
+
+            numero_nodos_expandidos++;
 
             //std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << std::endl;
             //std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
@@ -167,13 +165,12 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
             std::vector < std::string > info_entorno_casilla_lateral_derecha = this->c_entorno.get_informacion_entorno_pos( entorno, pos_lateral_derecha );
             
             if( info_entorno_casilla_superior[4] != "1" ){
-                std::tuple  < int, int*, std::string, std::string, std::uintptr_t, int > expansion;
                 int *pos_apuntada = new int[2]();
 
                 pos_apuntada[0] = pos_superior[0];
                 pos_apuntada[1] = pos_superior[1];
 
-                expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", std::uintptr_t( &arbol_expansiones[indice_controlador] ), indice_controlador );
+                std::tuple  < int, int*, std::string, std::string, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador );
                 if ( ultima_tupla != expansion ){
                     arbol_expansiones.push_back( expansion );
                     ultima_tupla = expansion;
@@ -181,13 +178,12 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
             }
 
             if( info_entorno_casilla_lateral_izquierda[4] != "1" ){
-                std::tuple  < int, int*, std::string, std::string, std::uintptr_t, int > expansion;
                 int *pos_apuntada = new int[2]();
 
                 pos_apuntada[0] = pos_lateral_izquierda[0];
                 pos_apuntada[1] = pos_lateral_izquierda[1];
 
-                expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", std::uintptr_t( &arbol_expansiones[indice_controlador] ), indice_controlador );
+                std::tuple  < int, int*, std::string, std::string, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador );
                 if ( ultima_tupla != expansion ){
                     arbol_expansiones.push_back( expansion );
                     ultima_tupla = expansion;
@@ -195,13 +191,12 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
             }
 
             if( info_entorno_casilla_inferior[4] != "1" ){
-                std::tuple  < int, int*, std::string, std::string, std::uintptr_t, int > expansion;
                 int *pos_apuntada = new int[2]();
 
                 pos_apuntada[0] = pos_inferior[0];
                 pos_apuntada[1] = pos_inferior[1];
 
-                expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", std::uintptr_t( &arbol_expansiones[indice_controlador] ), indice_controlador );
+                std::tuple  < int, int*, std::string, std::string, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador );
                 if ( ultima_tupla != expansion ){
                     arbol_expansiones.push_back( expansion );
                     ultima_tupla = expansion;
@@ -209,71 +204,73 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
             }
 
             if( info_entorno_casilla_lateral_derecha[4] != "1" ){
-                std::tuple  < int, int*, std::string, std::string, std::uintptr_t, int > expansion;
                 int *pos_apuntada = new int[2]();
 
                 pos_apuntada[0] = pos_lateral_derecha[0];
                 pos_apuntada[1] = pos_lateral_derecha[1];
 
-                expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", std::uintptr_t( &arbol_expansiones[indice_controlador] ), indice_controlador );
+                std::tuple  < int, int*, std::string, std::string, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador );
                 if ( ultima_tupla != expansion ){
                     arbol_expansiones.push_back( expansion );
                     ultima_tupla = expansion;
                 }
             }
             indice_controlador++;
+            if( info_casilla == "5" ){
+                break;
+            }
         }
-
-        
     };    
 
-    std::cout << std::endl << "Encontrado!!" << std::endl;
-    std::cout << "Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
-    std::cout << "Pos de la meta en el vector: " << pos_meta_vector << std::endl << std::endl;
+    auto fin = std::chrono::system_clock::now();
+    std::time_t tiempo_fin = std::chrono::system_clock::to_time_t( fin );
+    std::cout << "Finalizó: " << std::ctime(&tiempo_fin) << std::endl;
 
-    for(int x = (arbol_expansiones.size() - 1); x > 0; x-- ){
+    std::tuple  < int, int*, std::string, std::string, int > *tupla_regresion = &arbol_expansiones[ pos_meta_vector ];
+    int *pos_regresion = std::get<1>( *tupla_regresion );
+    std::string val_tupla_regresion = std::get<2>( *tupla_regresion );
+    std::string accion_tupla_regresion = std::get<3>( *tupla_regresion );
+    int indice_padre =  std::get<4>( *tupla_regresion );
+
+    bool nodo_error = true;
+    std::string mensaje_error = " [Nodo error]";
+
+    do{
         
-        //std::cout << (std::string * ) &( *( std::tuple  < int, int*, std::string, std::string, std::uintptr_t >* ) &std::get<4>( arbol_expansiones[x] ) )<< std::endl;
-
-        if( std::get<2>(arbol_expansiones[x]) == "5" ){
-
-            std::tuple  < int, int*, std::string, std::string, std::uintptr_t, int > *tupla_regresion = &arbol_expansiones[x];
-            int *pos_regresion = std::get<1>( *tupla_regresion );
-            std::string val_tupla_regresion = std::get<2>( *tupla_regresion );
-            std::string accion_tupla_regresion = std::get<3>( *tupla_regresion );
-            int indice_padre =  std::get<5>( *tupla_regresion );
-
-            do{
-                std::cout << " Pos[Addrs]: " << "[" << pos_regresion[0] << "," << pos_regresion[1] << "]" << " Val: " << val_tupla_regresion << " Acción previa: " << accion_tupla_regresion << " indice padre: " << indice_padre << std::endl;
-                tupla_regresion = &arbol_expansiones[std::get<5>( *tupla_regresion )];
+        std::cout << " Pos: "
+                  << "[" << pos_regresion[0] << "," << pos_regresion[1] << "]" 
+                  << " Val: " << val_tupla_regresion 
+                  << " Acción previa: " 
+                  << accion_tupla_regresion 
+                  << " Indice padre: " << indice_padre 
+                  << mensaje_error << std::endl;
+        tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
                 
-                pos_regresion = std::get<1>( *tupla_regresion );
-                val_tupla_regresion = std::get<2>( *tupla_regresion );
-                accion_tupla_regresion = std::get<3>( *tupla_regresion );
-                std::cout << (std::string *)  std::get<4>( *tupla_regresion ) << std::endl;
-                indice_padre = std::get<5>( *tupla_regresion );
-				
+        pos_regresion = std::get<1>( *tupla_regresion );
+        val_tupla_regresion = std::get<2>( *tupla_regresion );
+        accion_tupla_regresion = std::get<3>( *tupla_regresion );
+        indice_padre = std::get<4>( *tupla_regresion );
 
-            }while( val_tupla_regresion != "2" );
-            
-            
-            /*      
-            pos_regresion = std::get<1>( *tupla_padre );
-            val_tupla_regresion = std::get<2>( *tupla_padre );
-            accion_tupla_regresion = std::get<3>( *tupla_padre );
-            std::tuple  < int, int*, std::string, std::string, std::uintptr_t > *tupla_padre2 = ( std::tuple< int, int*, std::string, std::string, std::uintptr_t  >* ) &std::get<4>( *tupla_padre );
-            std::cout << "ID: " << x << " Pos[Addrs]: " << "[" << pos_regresion[0] << "," << pos_regresion[1] << "]" << " Val: " << val_tupla_regresion << " Acción previa: " << accion_tupla_regresion << std::endl;
-            
-            
-            pos_regresion = std::get<1>( *tupla_padre2 );
-            val_tupla_regresion = std::get<2>( *tupla_padre2 );
-            accion_tupla_regresion = std::get<3>( *tupla_padre2 );
-            std::cout << "ID: " << x << " Pos[Addrs]: " << "[" << pos_regresion[0] << "," << pos_regresion[1] << "]" << " Val: " << val_tupla_regresion << " Acción previa: " << accion_tupla_regresion << std::endl;
-             */      
-            break;
+        if( nodo_error ){
+            nodo_error = false;
+            mensaje_error = "";
         }
-    }
+       
+    }while( val_tupla_regresion != "2" );
 
+    std::cout << std::endl 
+              << "Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
+
+    std::cout << "Pos de la meta en el vector: " 
+              << pos_meta_vector << std::endl;
+
+    std::cout << "Número de nodos expandidos: " 
+              << numero_nodos_expandidos << std::endl;
+
+    std::chrono::duration<double> duracion_algoritmo = fin - inicio;
+    std::cout << "Duración del algoritmo: "
+              << duracion_algoritmo.count() << "s" << std::endl;
+            
 };
 
 

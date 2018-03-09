@@ -11,7 +11,6 @@ int main( int argc, const char* argv[] ){
     //std::cout << c_general.get_entorno().get_mapa().size() << std::endl;
 
     c_general.jugar_busqueda_no_informada_amplitud( c_general.get_entorno(), c_general.get_agente() );
-
     
     /*std::tuple<int, std::string, std::string, int, std::uintptr_t > root;
     root = std::make_tuple(1, "r", "root", 3, std::uintptr_t( &root )); 
