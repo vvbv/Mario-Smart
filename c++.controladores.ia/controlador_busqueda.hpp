@@ -2,6 +2,9 @@
 #define CONTROLADOR_GENERAL_HPP_
 
     #include <tuple>
+    #include <chrono>
+    #include <ctime>
+    #include <thread> 
     #include "controlador_entorno.cpp"
     #include "controlador_agente.cpp"
     
