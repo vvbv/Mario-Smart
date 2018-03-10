@@ -452,8 +452,8 @@ void Controlador_busqueda::escribir_trayecto( std::vector < std::string > accion
     cabezera += "    \"punto_partida\":[ " + std::to_string( entorno.get_posicion_inicial()[0] ) + ", " + std::to_string( entorno.get_posicion_inicial()[1] ) + " ],\n";
     
     std::string movimientos = "    \"movimientos\":[\n";
-    for( int x = 0; x < acciones.size(); x++ ){
-        if( x == ( acciones.size() -1 ) ){
+    for( int x = acciones.size() - 1; x >= 0 ; x-- ){
+        if( x == 0  ){
             movimientos += "        { \"accion\":\"" + acciones[x] + "\" }\n    ],";
         }else{
             movimientos += "        { \"accion\":\"" + acciones[x] + "\" },\n";
