@@ -6,6 +6,7 @@
     #include <ctime>
     #include <thread> 
     #include <algorithm>
+    #include <fstream>
     #include "controlador_entorno.cpp"
     #include "controlador_agente.cpp"
     
@@ -29,8 +30,11 @@
             void set_entorno( Entorno entorno );
             void set_agente( Agente agente );
 
-            void jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente );
-            void jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente );
+            std::vector < std::string > jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente );
+            std::vector < std::string > jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente );
+
+            void escribir_trayecto( std::vector < std::string > acciones, Entorno entorno, Agente agente );
+            void escribir_trayecto( std::vector < std::string > acciones );
 
             /* Fuera de uso */
             void jugar_agente_simple( Entorno entorno, Agente agente );

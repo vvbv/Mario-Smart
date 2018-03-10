@@ -91,7 +91,7 @@ void Controlador_busqueda::jugar_agente_simple(){
 
 };
 
-void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente ){
+std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente ){
 
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
@@ -235,6 +235,8 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
     bool nodo_error = true;
     std::string mensaje_error = " [Nodo error]";
 
+    std::vector < std::string > acciones;
+
     do{
         
         std::cout << " Pos: "
@@ -250,6 +252,8 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
         val_tupla_regresion = std::get<2>( *tupla_regresion );
         accion_tupla_regresion = std::get<3>( *tupla_regresion );
         indice_padre = std::get<4>( *tupla_regresion );
+
+        acciones.push_back( accion_tupla_regresion );
 
         if( nodo_error ){
             nodo_error = false;
@@ -270,10 +274,12 @@ void Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno
     std::chrono::duration<double> duracion_algoritmo = fin - inicio;
     std::cout << "Duración del algoritmo: "
               << duracion_algoritmo.count() << "s" << std::endl;
+
+    return acciones;
             
 };
 
-void Controlador_busqueda::jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente ){
+std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente ){
     
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
@@ -439,3 +445,55 @@ void Controlador_busqueda::jugar_busqueda_no_informada_profundidad( Entorno ento
     
 };
 
+void Controlador_busqueda::escribir_trayecto( std::vector < std::string > acciones, Entorno entorno, Agente agente ){
+    
+    std::string cabezera = "{\n";
+
+    std::string movimientos = "    \"movimientos\":[\n";
+    for( int x = 0; x < acciones.size(); x++ ){
+        if( x == ( acciones.size() -1 ) ){
+            movimientos += "        { \"accion\":\"" + acciones[x] + "\" }\n    ],";
+        }else{
+            movimientos += "        { \"accion\":\"" + acciones[x] + "\" },\n";
+        }
+    }
+
+    std::string mapa = "\n    \"mapa\":[\n";
+    for( int x = 0; x < entorno.get_mapa().size(); x++ ){
+        std::string fila = "        [ ";
+        for( int y = 0; y < entorno.get_mapa()[0].size(); y++ ){
+            if( y == ( entorno.get_mapa()[0].size() -1 ) ){
+                if( x == ( entorno.get_mapa().size() -1 ) ){
+                    fila += entorno.get_mapa()[x][y] + " ]\n";
+                }else{
+                    fila += entorno.get_mapa()[x][y] + " ],\n";
+                }
+                
+            }else{
+                fila += entorno.get_mapa()[x][y] + ", ";
+            }
+        }
+        
+        mapa += fila;
+    }
+    mapa += "    ]";
+
+    std::string pie = "\n}";
+
+    std::string json = cabezera + movimientos + mapa + pie;
+
+    std::ofstream archivo_json_text( "json.txt" );
+    archivo_json_text << json;
+    archivo_json_text.close();
+
+    std::ofstream archivo_json_json( "json.json" );
+    archivo_json_json << json;
+    archivo_json_json.close();
+
+    std::cout << "Salida almacenada en json.txt y json.json" << std::endl;
+    
+};
+
+void Controlador_busqueda::escribir_trayecto( std::vector < std::string > acciones ){
+    this->escribir_trayecto( acciones, this->entorno, this->agente );
+};

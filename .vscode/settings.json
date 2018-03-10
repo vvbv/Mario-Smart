@@ -36,7 +36,8 @@
         "type_traits": "cpp",
         "typeinfo": "cpp",
         "utility": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "fstream": "cpp"
     },
     "code-runner.executorMap": {
         "javascript": "node",
