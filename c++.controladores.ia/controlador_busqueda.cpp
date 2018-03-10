@@ -327,13 +327,13 @@ void Controlador_busqueda::jugar_busqueda_no_informada_profundidad( Entorno ento
 
             numero_nodos_expandidos++;
 
-            /*std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
-                      << " [" << info_entorno[4] << "] " 
+            std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
+                      << "Info: [" << info_entorno[4] << "] " 
                       << "Información del entorno: A:" << info_entorno[0] 
                       << " I:" << info_entorno[1] 
                       << " X:" << info_entorno[2] 
                       << " D:" << info_entorno[3] 
-                      << " Tamaño del arbol: " << arbol_expansiones.size() << std::endl;*/
+                      << " Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
             
             int pos_superior[2];
             int pos_lateral_izquierda[2];
