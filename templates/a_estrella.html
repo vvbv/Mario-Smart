@@ -23,6 +23,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='css/freelancer.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
 </head>
 
@@ -79,7 +80,9 @@
             <h2 class="text-center text-uppercase text-secondary mb-0">Busqueda A*</h2>
             <hr class="star-dark mb-5">
             <div class="row">
+                <div id="resultado" class="col-md-8">
 
+                </div>
             </div>
         </div>
     </section>
@@ -129,7 +132,8 @@
     <script src="{{ url_for('static', filename='js/contact_me.js') }}"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="{{ url_for('static', filename='css/freelancer.min.css') }}js/freelancer.min.js"></script>
+    <script src="{{ url_for('static', filename='js/freelancer.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
 </body>
 
