@@ -1,10 +1,18 @@
 from flask import Flask, abort, request, render_template 
 app = Flask(__name__)
+import json
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template("index.html")
+
+@app.route('/json_salida')
+def json_salida():
+    archivo = open('json_salida.txt','r')
+    arc = archivo.read()
+    archivo.close()
+    return arc
 
 
 @app.route('/amplitud')
