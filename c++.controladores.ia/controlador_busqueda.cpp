@@ -448,7 +448,9 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
 void Controlador_busqueda::escribir_trayecto( std::vector < std::string > acciones, Entorno entorno, Agente agente ){
     
     std::string cabezera = "{\n";
-
+    
+    cabezera += "    \"punto_partida\":[ " + std::to_string( entorno.get_posicion_inicial()[0] ) + ", " + std::to_string( entorno.get_posicion_inicial()[1] ) + " ],\n";
+    
     std::string movimientos = "    \"movimientos\":[\n";
     for( int x = 0; x < acciones.size(); x++ ){
         if( x == ( acciones.size() -1 ) ){
