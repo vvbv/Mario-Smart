@@ -20,21 +20,21 @@ $(document).ready(function () {
                     var j = 0;
                     value.forEach(function (val, index) {
                         if (val == 1) {
-                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/wall.png'></img>";
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100% !important' class='img' src='static/images/wall.png'></img>";
                         } else if (val == 2) {
                             posicion.push(i);
                             posicion.push(j);
-                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/mario.png'></img>";
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100% !important' class='img' src='static/images/mario.png'></img>";
                         } else if (val == 3) {
-                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/flor.png'></img>";
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100% !important' class='img' src='static/images/flor.png'></img>";
                         } else if (val == 4) {
-                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/tortuga.png'></img>";
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100% !important' class='img' src='static/images/tortuga.png'></img>";
                         } else if (val == 5) {
-                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/princesa.png'></img>";
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100% !important' class='img' src='static/images/princesa.png'></img>";
                         } else if (val == 0) {
-                            img = "<img id = '"+i+"-"+j+"' style = 'height:100 %;width: 160px !important' class='img' src='static/images/camino.png'></img>";
+                            img = "<img id = '"+i+"-"+j+"' style = 'height:100 %;width: 100% !important' class='img' src='static/images/camino.png'></img>";
                         }
-                        $("#row_" + i).append("<div id = 'columna' class = 'col-md-3'>" + img + " </div>");
+                        $("#row_" + i).append("<div id = 'columna' class = 'col-md-1'>" + img + " </div>");
                         j++;
                     })
                     i++;
@@ -47,19 +47,21 @@ $(document).ready(function () {
         }
         );
         
-        datos.forEach(function(value, key){
+
+        //FUNCION DE MOVIMIENTO
+        // datos.forEach(function(value, key){
             
-            setTimeout(function() {
-                console.log(posicion);
-                id_pos = "#"+posicion[0]+"-"+posicion[1];
-                $(id_pos).attr('src', 'static/images/camino_recorrido.png');
+           
+        //         console.log(posicion);
+        //         id_pos = "#"+posicion[0]+"-"+posicion[1];
+        //         $(id_pos).attr('src', 'static/images/camino_recorrido.png').delay(200);
     
-                nuevaPosicion = value['llegada'];
-                id_nueva = "#"+nuevaPosicion[0]+"-"+nuevaPosicion[1];
-                $(id_nueva).attr('src', 'static/images/mario.png');
-                posicion = nuevaPosicion;
-              }, 3500);
+        //         nuevaPosicion = value['llegada'];
+        //         id_nueva = "#"+nuevaPosicion[0]+"-"+nuevaPosicion[1];
+        //         $(id_nueva).attr('src', 'static/images/mario.png').delay(200);
+        //         posicion = nuevaPosicion;
+              
             
 
-        })
+        // })
 });

@@ -9,7 +9,7 @@ def index():
 
 @app.route('/json_salida')
 def json_salida():
-    archivo = open('json_salida.txt','r')
+    archivo = open('json.txt','r')
     arc = archivo.read()
     archivo.close()
     return arc
