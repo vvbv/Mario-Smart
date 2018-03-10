@@ -10,7 +10,8 @@ int main( int argc, const char* argv[] ){
     c_general.get_controlador_entorno().pintar_pos_inicial();
     c_general.get_controlador_entorno().pintar_entorno();
 
-    c_general.jugar_busqueda_no_informada_amplitud( c_general.get_entorno(), c_general.get_agente() );
+    //c_general.jugar_busqueda_no_informada_amplitud( c_general.get_entorno(), c_general.get_agente() );
+    c_general.jugar_busqueda_no_informada_profundidad( c_general.get_entorno(), c_general.get_agente() );
 
     return 0;
 };
