@@ -1,42 +1,65 @@
 $(document).ready(function () {
 
+    var datos = [];
+    var posicion = [];
+
     var URL_MAPA = "/json_salida";
-    console.log(URL_MAPA);
     $.ajax
         (
         {
             url: URL_MAPA,
+            async: false,
             dataType: "text",
             success: function (data) {
                 data = JSON.parse(data);
-                console.log(data);
-                i = 0;
-                data['mapa'].forEach(function(value, index) {
-                    $("#resultado").append('<div id = "row_'+i+'" class = "row"> </div>');
-                    value.forEach(function(val, index){
-                        if(val == 1){
-                            img = "<img style = 'width: 100px !important' class='img' src='static/images/wall.png'></img>";
-                        }else if(val == 2){
-                            img = "<img style = 'width: 100px !important' class='img' src='static/images/mario.png'></img>";
-                        }else if(val == 3){
-                            img = "<img style = 'width: 100px !important' class='img' src='static/images/flor.png'></img>";                            
-                        }else if(val == 4){
-                            img = "<img style = 'width: 100px !important' class='img' src='static/images/tortuga.png'></img>";                            
-                        }else if(val == 5){
-                            img = "<img style = 'width: 100px !important' class='img' src='static/images/princesa.png'></img>";                            
-                        }else if(val == 0){
-                            img = "<img style = 'height:100 %;width: 160px !important' class='img' src='static/images/camino.png'></img>";
+                datos = data["movimientos"];
+                //console.log(datos);
+                var i = 0;
+                data['mapa'].forEach(function (value, index) {
+                    $("#resultado").append('<div id = "row_' + i + '" class = "row"> </div>');
+                    var j = 0;
+                    value.forEach(function (val, index) {
+                        if (val == 1) {
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/wall.png'></img>";
+                        } else if (val == 2) {
+                            posicion.push(i);
+                            posicion.push(j);
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/mario.png'></img>";
+                        } else if (val == 3) {
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/flor.png'></img>";
+                        } else if (val == 4) {
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/tortuga.png'></img>";
+                        } else if (val == 5) {
+                            img = "<img id = '"+i+"-"+j+"' style = 'width: 100px !important' class='img' src='static/images/princesa.png'></img>";
+                        } else if (val == 0) {
+                            img = "<img id = '"+i+"-"+j+"' style = 'height:100 %;width: 160px !important' class='img' src='static/images/camino.png'></img>";
                         }
-                        $("#row_"+i).append("<div id = 'columna' class = 'col-md-3'>"+img+" </div>")
+                        $("#row_" + i).append("<div id = 'columna' class = 'col-md-3'>" + img + " </div>");
+                        j++;
                     })
                     i++;
-                    //console.log("Index: " + index + " | Value: " + value)
-                  });
+                });
 
             },
-            error: function(msg){
+            error: function (msg) {
                 console.log(msg);
             }
         }
         );
+        
+        datos.forEach(function(value, key){
+            
+            setTimeout(function() {
+                console.log(posicion);
+                id_pos = "#"+posicion[0]+"-"+posicion[1];
+                $(id_pos).attr('src', 'static/images/camino_recorrido.png');
+    
+                nuevaPosicion = value['llegada'];
+                id_nueva = "#"+nuevaPosicion[0]+"-"+nuevaPosicion[1];
+                $(id_nueva).attr('src', 'static/images/mario.png');
+                posicion = nuevaPosicion;
+              }, 3500);
+            
+
+        })
 });
