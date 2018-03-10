@@ -29,6 +29,7 @@
             void set_agente( Agente agente );
 
             void jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente );
+            void jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente );
 
             /* Fuera de uso */
             void jugar_agente_simple( Entorno entorno, Agente agente );
