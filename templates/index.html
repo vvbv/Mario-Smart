@@ -1,29 +1,187 @@
-<html lang="es">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>MARIO SMART</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>MARIO SMART</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="{{ url_for('static', filename='vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Plugin CSS -->
+  <link href="{{ url_for('static', filename='vendor/magnific-popup/magnific-popup.css') }}" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/freelancer.min.css') }}" rel="stylesheet">
+
 </head>
 
-<body>
-    <img class="imgTitulo" src="{{ url_for('static', filename='images/titulo.png') }}" alt="">
-    <img class="gif" src="{{ url_for('static', filename='images/mario.gif') }}">
+<body id="page-top">
 
-    
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="/index">MARIO SMART</a>
+      <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse"
+        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fa fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item mx-0 mx-lg-1">
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#sel_no_inf">Busquedas No Informadas</a>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#sel_inf">Busquedas Informadas</a>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#footer">Equipo</a>
+              </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    <footer class="navbar-fixed-bottom">
-        <b>PRIMER PROYECTO IA</b>
-        <br> Autores:
-        <br> Camilo José Cruz Rivera -
-        <b>1428907</b>
-        <br> Jeison Cardona Gomez -
-        <b>1325562</b>
-        <br>
-    </footer>
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+  <!-- Header -->
+  <header class="masthead bg-primary text-white text-center" style="padding: 10%">
+    <div class="container">
+      <img style="width: 350px" class="img-fluid mb-3 d-block mx-auto" src="{{ url_for('static', filename='images/titulo.png') }}"
+        alt="">
+      <img style="width: 350px" class="img-fluid mb-3 d-block mx-auto" src="{{ url_for('static', filename='images/mario.gif') }}"
+        alt="">
+      <hr class="star-light">
+    </div>
+  </header>
+
+  <!-- Portfolio Grid Section -->
+  <div id="sel_no_inf"></div>
+  <br>
+  <section class="portfolio" id="portfolio">
+    <div class="container" id="portfolio_container">
+      <h2 class="text-center text-uppercase text-secondary mb-0">Busquedas No Informadas</h2>
+      <hr class="star-dark mb-5">
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
+          <a class="portfolio-item d-block mx-auto" href="/amplitud">
+            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                <i class="fa fa-search-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/game.png') }}" alt="">
+            <p style="font-size: 22px">BUSQUEDA POR AMPLITUD</p>
+
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-5">
+            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                <i class="fa fa-search-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/safe.png') }}" alt="">
+            <p style="font-size: 22px">BUSQUEDA POR COSTO FIJO</p>
+
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-6">
+            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                <i class="fa fa-search-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/submarine.png') }}" alt="">
+            <p style="font-size: 22px">BUSQUEDA POR PROFUNDIDAD</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <div id="sel_inf"></div>
+  <br>
+  <section class="bg-primary text-white mb-0" id="about">
+    <div class="container">
+      <h2 class="text-center text-uppercase text-white">Busquedas Informadas</h2>
+      <hr class="star-light mb-5">
+      <div class="row">
+        <div class="col-lg-4 ml-auto">
+          <a href="">
+            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/cake.png') }}" alt="">
+          </a>
+          <p class="lead">BUSQUEDA ÁVARA</p>
+        </div>
+        <div class="col-lg-4 mr-auto">
+          <a href="">
+            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/cabin.png') }}" alt="">
+          </a>
+          <p class="lead">BUSQUEDA A*</p>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <div id="sel_team"></div>
+  <br>
+
+
+  <!-- Footer -->
+  <footer id="footer" class="footer text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-5 mb-lg-0">
+          <h4 class="text-uppercase mb-4">Camilo José Cruz Rivera</h4>
+          <p class="lead mb-0">1428907
+          </p>
+        </div>
+        <div class="col-md-4 mb-5 mb-lg-0">
+          <h4 class="text-uppercase mb-4">JSON Cardona Gomez</h4>
+          <p class="lead mb-0">1325562
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="copyright py-4 text-center text-white">
+    <div class="container">
+      <small>Copyright &copy; Mario Smart 2018</small>
+    </div>
+  </div>
+
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+
+  <!-- Contact Form JavaScript -->
+  <script src="{{ url_for('static', filename='js/jqBootstrapValidation.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/contact_me.js') }}"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="{{ url_for('static', filename='css/freelancer.min.css') }}js/freelancer.min.js"></script>
+
 </body>
 
 </html>
