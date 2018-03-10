@@ -14,7 +14,7 @@ $(document).ready(function () {
             success: function (data) {
                 data = JSON.parse(data);
                 datos = data["movimientos"];
-                //console.log(datos);
+
                 var i = 0;
                 data['mapa'].forEach(function (value, index) {
                     $("#resultado").append('<div id = "row_' + i + '" class = "row"> </div>');
@@ -40,77 +40,17 @@ $(document).ready(function () {
                     })
                     i++;
                 });
-
+                
             },
             error: function (msg) {
                 console.log(msg);
             }
         }
         );
+});
 
-
-    //FUNCION DE MOVIMIENTO
-    $(window).on('load', function () {
-        for (var x = 1; x < datos.length; x++) {
-            console.log("POS:")
-            console.log(posicion);
-            console.log(datos[x]);
-            nuevaPosicion = posicion;
-            switch (datos[x].accion) {
-                case "arriba":
-                    nuevaPosicion[0]--;
-                    break;
-                case "abajo":
-                    nuevaPosicion[0]++;
-                    break;
-                case "derecha":
-                    nuevaPosicion[1]++;
-                    break;
-                case "izquierda":
-                    nuevaPosicion[1]--;
-                    break;
-
-                default:
-                    break;
-            }
-
-            console.log("Nuev:");
-            console.log(nuevaPosicion);
-
-            id_pos = "#" + posicion[0] + "-" + posicion[1];
-            $(id_pos).attr('src', 'static/images/camino_recorrido.png').delay(2000);
-            id_nueva = "#" + nuevaPosicion[0] + "-" + nuevaPosicion[1];
-            $(id_nueva).attr('src', 'static/images/mario.png').delay(2000);
-            posicion = nuevaPosicion;
-   
-            // window.setTimeout(function () {
-            //     id_pos = "#" + posicion[0] + "-" + posicion[1];
-            //     $(id_pos).attr('src', 'static/images/camino_recorrido.png');
-            //     id_nueva = "#" + nuevaPosicion[0] + "-" + nuevaPosicion[1];
-            //     $(id_nueva).attr('src', 'static/images/mario.png');
-            //     posicion = nuevaPosicion;
-
-            // }, 2000)
-        }
-    })
-
-
-
-
-    // datos.forEach(function(value, key){
-
-
-    //         console.log(posicion);
-    //         id_pos = "#"+posicion[0]+"-"+posicion[1];
-    //         $(id_pos).attr('src', 'static/images/camino_recorrido.png').delay(200);
-
-    //         nuevaPosicion = value['llegada'];
-
-    //         posicion = nuevaPosicion;
-
-
-
-    // })
+$('#jugar_amplitud').click(function(){
+    movimiento(datos, posicion)
 });
 
 function sleep(milliseconds) {
@@ -120,4 +60,55 @@ function sleep(milliseconds) {
             break;
         }
     }
+}
+
+//FUNCION DE MOVIMIENTO
+function movimiento(datos_, posicion_inicial) {
+
+    var id_pos;
+    var nuevaPosicion;
+    var id_nueva;
+
+    for (var x = 1; x < datos_.length; x++) {
+
+        var mov = datos_[x];
+        
+        console.log( "POS:" + posicion_inicial )
+        console.log( mov );
+
+        nuevaPosicion = posicion_inicial;
+
+        switch ( mov.accion ) {
+            case "arriba":
+                nuevaPosicion[0]--;
+                break;
+            case "abajo":
+                nuevaPosicion[0]++;
+                break;
+            case "derecha":
+                nuevaPosicion[1]++;
+                break;
+            case "izquierda":
+                nuevaPosicion[1]--;
+                break;
+            default:
+                break;
+        }
+
+        console.log("Nuev: " + nuevaPosicion);
+        console.log( "--" );
+
+        id_pos = "#" + posicion_inicial[0] + "-" + posicion_inicial[1];
+        id_nueva = "#" + nuevaPosicion[0] + "-" + nuevaPosicion[1];
+
+        posicion_inicial = nuevaPosicion;
+        pintar(id_pos, id_nueva);
+    }
+}
+
+function pintar(pos_recorrido, pos_mario){
+    $(pos_recorrido).attr('src', 'static/images/camino_recorrido.png');
+    $(pos_mario).attr('src', 'static/images/mario.png');
+    sleep(200);
+    
 }
