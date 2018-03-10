@@ -5,6 +5,7 @@
     #include <chrono>
     #include <ctime>
     #include <thread> 
+    #include <algorithm>
     #include "controlador_entorno.cpp"
     #include "controlador_agente.cpp"
     

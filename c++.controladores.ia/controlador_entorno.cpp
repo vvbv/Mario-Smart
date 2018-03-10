@@ -113,10 +113,9 @@ std::vector<int> Controlador_entorno::get_pos_entorno_derecha( int pos_actual[2]
 };
 
 std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( int pos[2], bool frontera ){
-    std::vector < std::string > informacion;
 
+    std::vector < std::string > informacion;
     std::string arriba, izquierda, abajo, derecha, actual = "";
-    
         
         if( (( pos[0] - 1 ) > -1) ){
             arriba = this->entorno.get_mapa()[ pos[0] - 1 ][ pos[1] ] ;
