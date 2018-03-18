@@ -97,8 +97,8 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
     pos_actual[1] = entorno.get_posicion_inicial()[1]; 
 
-    std::tuple < int, int*, std::string, std::string, int > ultima_tupla;
-    std::vector < std::tuple < int, int*, std::string, std::string, int > > arbol_expansiones;
+    std::tuple < int, int*, std::string, std::string, int, int > ultima_tupla;
+    std::vector < std::tuple < int, int*, std::string, std::string, int, int > > arbol_expansiones;
 
     std::vector < std::string > info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual, false );
     std::string info_casilla = info_entorno[4];
@@ -115,18 +115,19 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
 
         if( indice_controlador == -1 ){
             // index, posicion, información de la casilla, operador aplicado( nodo root, operador root )
-            std::tuple  < int, int*, std::string, std::string, int > expansion;
+            std::tuple  < int, int*, std::string, std::string, int, int > expansion;
             int *pos_apuntada = new int[2]();
 
             pos_apuntada[0] = pos_actual[0];
             pos_apuntada[1] = pos_actual[1];
 
-            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0 );
+            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0, 0 );
 
-            arbol_expansiones.push_back( expansion );
+            arbol_expansiones.push_back( expansion ); 
             ultima_tupla = expansion;
             indice_controlador++;
         }else{
+            
 
             int pos_tupla_controladora[2];
 
@@ -134,6 +135,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
             pos_tupla_controladora[1] = std::get<1>( arbol_expansiones[indice_controlador] )[1];
 
             info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_tupla_controladora, false );
+            
             info_casilla = info_entorno[4];
 
             if( info_casilla == "5" ){
@@ -164,58 +166,76 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
             std::vector < std::string > info_entorno_casilla_inferior = this->c_entorno.get_informacion_entorno_pos( entorno, pos_inferior, false );
             std::vector < std::string > info_entorno_casilla_lateral_derecha = this->c_entorno.get_informacion_entorno_pos( entorno, pos_lateral_derecha, false );
             
-            if( info_entorno_casilla_superior[4] != "1" ){
-                int *pos_apuntada = new int[2]();
+            if( !info_entorno_casilla_superior.empty() ){
+                if( info_entorno_casilla_superior[4] != "1" ){
+                    int *pos_apuntada = new int[2]();
 
-                pos_apuntada[0] = pos_superior[0];
-                pos_apuntada[1] = pos_superior[1];
+                    pos_apuntada[0] = pos_superior[0];
+                    pos_apuntada[1] = pos_superior[1];
 
-                std::tuple  < int, int*, std::string, std::string, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador );
-                if ( ultima_tupla != expansion ){
-                    arbol_expansiones.push_back( expansion );
-                    ultima_tupla = expansion;
+                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+
+                    std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre );
+                    if ( ultima_tupla != expansion ){
+                        arbol_expansiones.push_back( expansion );
+                        ultima_tupla = expansion;
+                    }
                 }
             }
 
-            if( info_entorno_casilla_lateral_izquierda[4] != "1" ){
-                int *pos_apuntada = new int[2]();
+            if( !info_entorno_casilla_lateral_izquierda.empty() ){
+                if( info_entorno_casilla_lateral_izquierda[4] != "1" ){
+                    int *pos_apuntada = new int[2]();
 
-                pos_apuntada[0] = pos_lateral_izquierda[0];
-                pos_apuntada[1] = pos_lateral_izquierda[1];
+                    pos_apuntada[0] = pos_lateral_izquierda[0];
+                    pos_apuntada[1] = pos_lateral_izquierda[1];
 
-                std::tuple  < int, int*, std::string, std::string, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador );
-                if ( ultima_tupla != expansion ){
-                    arbol_expansiones.push_back( expansion );
-                    ultima_tupla = expansion;
+                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+
+                    std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre );
+                    if ( ultima_tupla != expansion ){
+                        arbol_expansiones.push_back( expansion );
+                        ultima_tupla = expansion;
+                    }
+                }
+            }
+            
+            if( !info_entorno_casilla_inferior.empty() ){
+                if( info_entorno_casilla_inferior[4] != "1" ){
+                    int *pos_apuntada = new int[2]();
+
+                    pos_apuntada[0] = pos_inferior[0];
+                    pos_apuntada[1] = pos_inferior[1];
+
+                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+
+                    std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre );
+                    if ( ultima_tupla != expansion ){
+                        arbol_expansiones.push_back( expansion );
+                        ultima_tupla = expansion;
+                    }
+                }
+            }
+            
+            if( !info_entorno_casilla_lateral_derecha.empty() ){
+                if( info_entorno_casilla_lateral_derecha[4] != "1" ){
+                    int *pos_apuntada = new int[2]();
+
+                    pos_apuntada[0] = pos_lateral_derecha[0];
+                    pos_apuntada[1] = pos_lateral_derecha[1];
+
+                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+
+                    std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre );
+                    if ( ultima_tupla != expansion ){
+                        arbol_expansiones.push_back( expansion );
+                        ultima_tupla = expansion;
+                    }
                 }
             }
 
-            if( info_entorno_casilla_inferior[4] != "1" ){
-                int *pos_apuntada = new int[2]();
-
-                pos_apuntada[0] = pos_inferior[0];
-                pos_apuntada[1] = pos_inferior[1];
-
-                std::tuple  < int, int*, std::string, std::string, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador );
-                if ( ultima_tupla != expansion ){
-                    arbol_expansiones.push_back( expansion );
-                    ultima_tupla = expansion;
-                }
-            }
-
-            if( info_entorno_casilla_lateral_derecha[4] != "1" ){
-                int *pos_apuntada = new int[2]();
-
-                pos_apuntada[0] = pos_lateral_derecha[0];
-                pos_apuntada[1] = pos_lateral_derecha[1];
-
-                std::tuple  < int, int*, std::string, std::string, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador );
-                if ( ultima_tupla != expansion ){
-                    arbol_expansiones.push_back( expansion );
-                    ultima_tupla = expansion;
-                }
-            }
             indice_controlador++;
+            
             if( info_casilla == "5" ){
                 break;
             }
@@ -226,7 +246,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
     std::time_t tiempo_fin = std::chrono::system_clock::to_time_t( fin );
     std::cout << "Finalizó: " << std::ctime(&tiempo_fin) << std::endl;
 
-    std::tuple  < int, int*, std::string, std::string, int > *tupla_regresion = &arbol_expansiones[ pos_meta_vector ];
+    std::tuple  < int, int*, std::string, std::string, int, int > *tupla_regresion = &arbol_expansiones[ pos_meta_vector ];
     int *pos_regresion = std::get<1>( *tupla_regresion );
     std::string val_tupla_regresion = std::get<2>( *tupla_regresion );
     std::string accion_tupla_regresion = std::get<3>( *tupla_regresion );
@@ -270,6 +290,10 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
 
     std::cout << "Número de nodos expandidos: " 
               << numero_nodos_expandidos << std::endl;
+
+    std::cout << "Profundidad del árbol: " 
+              << std::get<5>( arbol_expansiones[arbol_expansiones.size()] ) << std::endl;
+
 
     std::chrono::duration<double> duracion_algoritmo = fin - inicio;
     std::cout << "Duración del algoritmo: "

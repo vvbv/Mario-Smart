@@ -31,7 +31,7 @@ Entorno Controlador_entorno::cargar_entorno( std::string ubicacion ){
         std::vector < std::string > substrings_definicion_mapa;
         std::string substring = "";
 
-        substrings_definicion_mapa.push_back( "1" ); // Lado izquierdo de la frontera
+        //substrings_definicion_mapa.push_back( "1" ); // Lado izquierdo de la frontera
         while( ss_linea_mapa >> substring ){
             
             if( ( substring == "0" ) || ( substring == "1" ) || 
@@ -41,26 +41,25 @@ Entorno Controlador_entorno::cargar_entorno( std::string ubicacion ){
                 substrings_definicion_mapa.push_back( substring );
             }else if( substring == "2" ){
                 substrings_definicion_mapa.push_back( substring );
-                posicion_inicial_tmp[0] = ( i + 1 );
+                posicion_inicial_tmp[0] = ( i );
                 posicion_inicial_tmp[1] = ( substrings_definicion_mapa.size() - 1 );
             }
         }
-        substrings_definicion_mapa.push_back( "1" ); // Lado derecho de la frontera
+        //substrings_definicion_mapa.push_back( "1" ); // Lado derecho de la frontera
         mapa_tmp.push_back( substrings_definicion_mapa );
     }
 
     // Frontera superior
-    std::vector < std::string > frontera_superior_inferior;
+    /*std::vector < std::string > frontera_superior_inferior;
     for(int i = 0; i < mapa_tmp[0].size(); i++){
         frontera_superior_inferior.push_back( "1" );
-    }
-    mapa.push_back( frontera_superior_inferior );
+    }*/
+    //mapa.push_back( frontera_superior_inferior );
     for(int i = 0; i < mapa_tmp.size(); i++){
         mapa.push_back( mapa_tmp[i] );
     }
     // Frontera inferior
-    
-    mapa.push_back( frontera_superior_inferior );
+    //mapa.push_back( frontera_superior_inferior );
     
     Entorno entorno;
     entorno.set_mapa( mapa );
@@ -115,9 +114,13 @@ std::vector<int> Controlador_entorno::get_pos_entorno_derecha( int pos_actual[2]
 std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( int pos[2], bool frontera ){
 
     std::vector < std::string > informacion;
+    if( ( pos[0] == -1 ) || ( pos[1] == -1 ) || ( pos[0] == ( this->entorno.get_mapa().size() ) ) || ( pos[1] == ( this->entorno.get_mapa()[0].size() ) ) ){
+        return informacion;
+    }
+    
     std::string arriba, izquierda, abajo, derecha, actual = "";
         
-        if( (( pos[0] - 1 ) > -1) ){
+        if( ( ( pos[0] - 1 ) > -1 ) && ( pos[0] > -1 ) && ( pos[1] > -1 ) ){
             arriba = this->entorno.get_mapa()[ pos[0] - 1 ][ pos[1] ] ;
         }else{
             if ( frontera ){
@@ -127,7 +130,7 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( in
             }
         }
         
-        if( ( pos[1] - 1 ) > -1 ){
+        if( ( ( pos[1] - 1 ) > -1 ) && ( pos[0] > -1 ) && ( pos[1] > -1 ) ){
             izquierda = this->entorno.get_mapa()[ pos[0] ][ pos[1] - 1 ] ;
         }else{
             if ( frontera ){
@@ -137,7 +140,7 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( in
             }
         }
 
-        if(( ( pos[0] + 1  ) < this->entorno.get_mapa().size() - 1 ) ){
+        if( ( ( pos[0] + 1  ) < ( this->entorno.get_mapa().size() ) ) && ( pos[0] > -1 ) && ( pos[1] > -1 ) ){
             abajo = this->entorno.get_mapa()[ pos[0] + 1 ][ pos[1] ] ;
         }else{
             if ( frontera ){
@@ -145,9 +148,9 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( in
             }else{
                 abajo = "1";
             }
-        }     
+        }
 
-        if(( ( pos[1] + 1 ) < this->entorno.get_mapa()[0].size() - 1 )   ){
+        if( ( ( pos[1] + 1 ) < ( this->entorno.get_mapa()[0].size() ) ) && ( pos[0] > -1 ) && ( pos[1] > -1 ) ){
             derecha = this->entorno.get_mapa()[ pos[0] ][ pos[1] + 1 ] ;
         }else{
             if ( frontera ){
@@ -155,23 +158,25 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( in
             }else{
                 derecha = "1";
             }
-        }     
+        }
 
-        actual = this->entorno.get_mapa()[ pos[0] ][ pos[1] ];
+        if( ( pos[0] > -1 ) && ( pos[1] > -1 ) && ( pos[0] < ( this->entorno.get_mapa().size() ) ) && ( pos[1] < ( this->entorno.get_mapa()[0].size() ) ) ){
+            actual = this->entorno.get_mapa()[ pos[0] ][ pos[1] ];
+            informacion.push_back( arriba );
+            informacion.push_back( izquierda );
+            informacion.push_back( abajo );
+            informacion.push_back( derecha );
+            informacion.push_back( actual );
+        }
 
-    informacion.push_back( arriba );
-    informacion.push_back( izquierda );
-    informacion.push_back( abajo );
-    informacion.push_back( derecha );
-    informacion.push_back( actual );
     return informacion;
 };
 
 void Controlador_entorno::pintar_pos_inicial(){    
     Entorno entorno = this->entorno;
     std::vector<int> posicion_inicial = entorno.get_posicion_inicial();
-    std::cout << "Punto de partida: Fila => " << ( posicion_inicial[0] + 1 ); 
-    std::cout << " :: Columna => " << posicion_inicial[1] + 1 << std::endl << std::endl;
+    std::cout << "Punto de partida: Fila => " << ( posicion_inicial[0] ); 
+    std::cout << " :: Columna => " << posicion_inicial[1] << std::endl << std::endl;
 }
 
 void Controlador_entorno::pintar_entorno(){    
