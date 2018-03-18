@@ -31,7 +31,6 @@ Entorno Controlador_entorno::cargar_entorno( std::string ubicacion ){
         std::vector < std::string > substrings_definicion_mapa;
         std::string substring = "";
 
-        //substrings_definicion_mapa.push_back( "1" ); // Lado izquierdo de la frontera
         while( ss_linea_mapa >> substring ){
             
             if( ( substring == "0" ) || ( substring == "1" ) || 
@@ -45,21 +44,12 @@ Entorno Controlador_entorno::cargar_entorno( std::string ubicacion ){
                 posicion_inicial_tmp[1] = ( substrings_definicion_mapa.size() - 1 );
             }
         }
-        //substrings_definicion_mapa.push_back( "1" ); // Lado derecho de la frontera
         mapa_tmp.push_back( substrings_definicion_mapa );
     }
 
-    // Frontera superior
-    /*std::vector < std::string > frontera_superior_inferior;
-    for(int i = 0; i < mapa_tmp[0].size(); i++){
-        frontera_superior_inferior.push_back( "1" );
-    }*/
-    //mapa.push_back( frontera_superior_inferior );
     for(int i = 0; i < mapa_tmp.size(); i++){
         mapa.push_back( mapa_tmp[i] );
     }
-    // Frontera inferior
-    //mapa.push_back( frontera_superior_inferior );
     
     Entorno entorno;
     entorno.set_mapa( mapa );

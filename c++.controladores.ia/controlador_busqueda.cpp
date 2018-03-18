@@ -292,7 +292,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
               << numero_nodos_expandidos << std::endl;
 
     std::cout << "Profundidad del árbol: " 
-              << std::get<5>( arbol_expansiones[arbol_expansiones.size()] ) << std::endl;
+              << std::get<5>( arbol_expansiones[arbol_expansiones.size() - 1] ) << std::endl;
 
 
     std::chrono::duration<double> duracion_algoritmo = fin - inicio;
