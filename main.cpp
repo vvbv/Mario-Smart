@@ -15,6 +15,7 @@ int main( int argc, const char* argv[] ){
 
         if( ( std::string ) argv[1] == "amplitud" ){
             acciones = c_general.jugar_busqueda_no_informada_amplitud( c_general.get_entorno(), c_general.get_agente() );
+            c_general.escribir_trayecto( acciones );
         }else if( ( std::string ) argv[1] == "costo_uniforme" ){ 
 
         }else if( ( std::string ) argv[1] == "profundidad" ){
@@ -26,8 +27,6 @@ int main( int argc, const char* argv[] ){
         }else{
             return -1;
         }
-
-        c_general.escribir_trayecto( acciones );
 
     }else{
         std::cout << std::endl 
