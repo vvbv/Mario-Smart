@@ -726,12 +726,6 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
                 ultima_tupla = tuplas_ordenadas[ y ];
             }
 
-            for( int y = 0 ; y < arbol_expansiones.size(); y++ ){
-                std::cout << "EX: " << std::get < 6 > ( arbol_expansiones[ y ] ) << " ax: " << std::get < 3 > ( arbol_expansiones[ y ] ) << std::endl;
-            }
-
-            //break;
-
             if( info_casilla == "5" ){
                 break;
             }
