@@ -15,13 +15,21 @@ void Entorno::set_posicion_inicial( int posicion_inicial[2] ){
     this->posicion_inicial[1] = posicion_inicial[1];
 }
 
-std::vector< std::vector< std::string > > Entorno::get_mapa(){
+std::vector < std::vector< std::string > > Entorno::get_mapa(){
     return this->mapa;
 }
 
-std::vector<int> Entorno::get_posicion_inicial(){
+std::vector < int > Entorno::get_posicion_inicial(){
     std::vector < int > pos_ini;
     pos_ini.push_back( this->posicion_inicial[0] );
     pos_ini.push_back( this->posicion_inicial[1] );
     return pos_ini;
 }
+
+void Entorno::set_metas( std::vector < std::tuple < int, int > > metas ){
+    this->metas = metas;
+};
+
+std::vector < std::tuple < int, int > > Entorno::get_metas(){
+    return this->metas;
+};

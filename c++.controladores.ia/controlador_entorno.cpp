@@ -9,6 +9,7 @@ Entorno Controlador_entorno::cargar_entorno( std::string ubicacion ){
 
     std::vector< std::vector< std::string > > mapa; //2D
     std::vector< std::vector< std::vector< std::string > > > mapa3D; // [No implementado]
+    std::vector < std::tuple < int, int > > metas;
 
     std::vector < std::string > lineas;
     std::ifstream flujo_entrada( ubicacion.c_str() );
@@ -38,6 +39,11 @@ Entorno Controlador_entorno::cargar_entorno( std::string ubicacion ){
                 ( substring == "5" ) 
             ){
                 substrings_definicion_mapa.push_back( substring );
+                if( substring == "5" ){
+                    std::tuple < int, int > meta; 
+                    meta = std::make_tuple( i, substrings_definicion_mapa.size() - 1 );
+                    metas.push_back( meta );
+                }
             }else if( substring == "2" ){
                 substrings_definicion_mapa.push_back( substring );
                 posicion_inicial_tmp[0] = ( i );
@@ -54,6 +60,7 @@ Entorno Controlador_entorno::cargar_entorno( std::string ubicacion ){
     Entorno entorno;
     entorno.set_mapa( mapa );
     entorno.set_posicion_inicial( posicion_inicial_tmp );
+    entorno.set_metas( metas );
 
     return entorno;
 }
@@ -160,6 +167,25 @@ std::vector < std::string > Controlador_entorno::get_informacion_entorno_pos( in
         }
 
     return informacion;
+};
+
+bool Controlador_entorno::es_meta( Entorno entorno, int pos[2] ){
+
+    std::vector < std::tuple < int, int > > metas = entorno.get_metas();
+    std::cout << metas.size() << std::endl;
+    for( int x = 0; x < metas.size(); x++ ){
+        std::cout << std::get<0>( metas[x] ) << "  " << std::get<1>( metas[x] ) << std::endl;
+        if( ( ( int ) std::get<0>( metas[x] ) == pos[0] ) && ( ( int ) std::get<1>( metas[x] ) == pos[1] ) ){
+            std::cout << std::get<0>( metas[x] ) << "  " << std::get<1>( metas[x] ) << std::endl;
+            return true;
+        }
+    }
+
+    return false;
+};
+
+bool Controlador_entorno::es_meta( int pos[2] ){
+    return es_meta( this->entorno, pos );
 };
 
 void Controlador_entorno::pintar_pos_inicial(){    

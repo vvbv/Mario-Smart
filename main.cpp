@@ -10,6 +10,7 @@ int main( int argc, const char* argv[] ){
 
         std::cout << std::endl << "Mario - Smart" << std::endl;
         std::cout << "============="<< std::endl << std::endl;
+
         c_general.get_controlador_entorno().pintar_pos_inicial();
         c_general.get_controlador_entorno().pintar_entorno();
 
@@ -21,7 +22,9 @@ int main( int argc, const char* argv[] ){
         }else if( ( std::string ) argv[1] == "profundidad" ){
             c_general.jugar_busqueda_no_informada_profundidad( c_general.get_entorno(), c_general.get_agente() );
         }else if( ( std::string ) argv[1] == "avara" ){
-
+            //Heuristica: Distancia en linea recta. 
+            c_general.jugar_busqueda_informada_avara( c_general.get_entorno(), c_general.get_agente() );
+            
         }else if( ( std::string ) argv[1] == "a_estrella" ){
 
         }else{
