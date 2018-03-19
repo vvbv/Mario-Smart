@@ -706,26 +706,21 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
                 }
             }
 
-            
-
             //ASC
             std::vector < std::tuple  < int, int*, std::string, std::string, int, int, double > > tuplas_ordenadas;
-            
+
             for( int x = 0; x < tuplas_pendientes.size(); x++ ){
                 tuplas_ordenadas.push_back( tuplas_pendientes[ x ] );
-                std::cout << "FLAG; " << tuplas_pendientes.size() << " - " << tuplas_ordenadas.size() << std::endl;
                 for( int y = 0; y < tuplas_pendientes.size(); y++ ){
-                    std::cout << "x; " << x << " - " << y << std::endl;
-                    if( ( int ) std::get < 6 > ( tuplas_pendientes[ y ] ) < ( int ) std::get < 6 > ( tuplas_ordenadas[ x ] )  ){
-                        std::cout << "PLA; " << x << " - " << y << std::endl;
-                        tuplas_ordenadas.at( x ) = tuplas_ordenadas[ y ];
+                    if( ( double ) std::get < 6 > ( tuplas_pendientes[ y ] ) < ( double ) std::get < 6 > ( tuplas_ordenadas[ x ] )  ){
+                        tuplas_ordenadas.at( x ) = tuplas_pendientes[ y ];
                     }
                 }
             }
 
+           
             arbol_expansiones.erase( arbol_expansiones.begin() );
 
-            std::cout << "CT: " << tuplas_pendientes.size() << std::endl;
             for( int y = ( tuplas_ordenadas.size() - 1 ) ; y > -1; y-- ){
                 arbol_expansiones.insert( arbol_expansiones.begin(), tuplas_ordenadas[ y ] );
                 ultima_tupla = tuplas_ordenadas[ y ];
