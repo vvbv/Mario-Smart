@@ -7,6 +7,7 @@
     #include <thread> 
     #include <algorithm>
     #include <fstream>
+    #include <cmath>
     #include "controlador_entorno.cpp"
     #include "controlador_agente.cpp"
     

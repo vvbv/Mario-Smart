@@ -359,7 +359,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
             numero_nodos_expandidos++;
 
             std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
-                      << "Info: [" << info_entorno[4] << "] " 
+                      << " Info: [" << info_entorno[4] << "] " 
                       << "Información del entorno: A:" << info_entorno[0] 
                       << " I:" << info_entorno[1] 
                       << " X:" << info_entorno[2] 
@@ -488,15 +488,15 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
 };
 
 std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara( Entorno entorno, Agente agente ){
-    /*
+    
     std::vector < std::string > acciones;
 
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
     pos_actual[1] = entorno.get_posicion_inicial()[1]; 
 
-    std::tuple < int, int*, std::string, std::string, int, int > ultima_tupla;
-    std::vector < std::tuple < int, int*, std::string, std::string, int, int > > arbol_expansiones;
+    std::tuple < int, int*, std::string, std::string, int, int, double > ultima_tupla;
+    std::vector < std::tuple < int, int*, std::string, std::string, int, int, double > > arbol_expansiones;
     std::vector < std::tuple < int, int > > posiciones_visitadas;
 
     std::vector < std::string > info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual, true );
@@ -513,14 +513,24 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
     while( info_casilla != "5" ){
 
         if( indice_controlador == -1 ){
-            // index, posicion, información de la casilla, operador aplicado( nodo root, operador root )
-            std::tuple  < int, int*, std::string, std::string, int, int > expansion;
+            // index, posicion, información de la casilla, operador aplicado( nodo root, operador root ), numero, profundidad, valor_heuristica 
+            std::tuple  < int, int*, std::string, std::string, int, int, double > expansion;
             int *pos_apuntada = new int[2]();
 
             pos_apuntada[0] = pos_actual[0];
             pos_apuntada[1] = pos_actual[1];
 
-            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0, 0 );
+            //Asumimos una sola meta para Avara;
+            std::tuple < int, int > meta = entorno.get_metas()[0];
+            int pos_meta[2];
+            pos_meta[0] = (int) std::get < 0 > ( meta );
+            pos_meta[1] = (int) std::get < 1 > ( meta ); 
+            double valor_heuristica = sqrt( 
+                                            pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                            pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                        );
+
+            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0, 0, valor_heuristica );
 
             arbol_expansiones.push_back( expansion );
             ultima_tupla = expansion;
@@ -544,7 +554,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
             numero_nodos_expandidos++;
 
             std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
-                      << "Info: [" << info_entorno[4] << "] " 
+                      << " Info: [" << info_entorno[4] << "] " 
                       << "Información del entorno: A:" << info_entorno[0] 
                       << " I:" << info_entorno[1] 
                       << " X:" << info_entorno[2] 
@@ -570,6 +580,8 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
             std::vector < std::string > info_entorno_casilla_inferior = this->c_entorno.get_informacion_entorno_pos( entorno, pos_inferior, true );
             std::vector < std::string > info_entorno_casilla_lateral_derecha = this->c_entorno.get_informacion_entorno_pos( entorno, pos_lateral_derecha, true );
 
+            std::vector < std::tuple  < int, int*, std::string, std::string, int, int, double > > tuplas_pendientes;
+
             if( !info_entorno_casilla_superior.empty() ){
                 if( ( info_entorno_casilla_superior[4] != "1" ) && ( info_entorno_casilla_superior[4] != "F" ) ){
                     int *pos_apuntada = new int[2]();
@@ -577,15 +589,26 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
                     pos_apuntada[0] = pos_superior[0];
                     pos_apuntada[1] = pos_superior[1];
 
+                    //Asumimos una sola meta para Avara;
+                    std::tuple < int, int > meta = entorno.get_metas()[0];
+                    int pos_meta[2];
+                    pos_meta[0] = (int) std::get < 0 > ( meta );
+                    pos_meta[1] = (int) std::get < 1 > ( meta ); 
+                    double valor_heuristica = sqrt( 
+                                                    pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                                    pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                                );
+
                     int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
 
-                    std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre );
+                    std::tuple  < int, int*, std::string, std::string, int, int, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre, valor_heuristica );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
-                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
-                            arbol_expansiones.insert( arbol_expansiones.begin(), expansion );
-                            ultima_tupla = expansion;
-                        }
+                        //if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            //arbol_expansiones.insert( arbol_expansiones.begin(), expansion );
+                            //ultima_tupla = expansion;
+                            tuplas_pendientes.push_back( expansion );
+                        //}
                     }
                 }
             }
@@ -597,15 +620,26 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
                     pos_apuntada[0] = pos_lateral_izquierda[0];
                     pos_apuntada[1] = pos_lateral_izquierda[1];
 
+                    //Asumimos una sola meta para Avara;
+                    std::tuple < int, int > meta = entorno.get_metas()[0];
+                    int pos_meta[2];
+                    pos_meta[0] = (int) std::get < 0 > ( meta );
+                    pos_meta[1] = (int) std::get < 1 > ( meta ); 
+                    double valor_heuristica = sqrt( 
+                                                    pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                                    pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                                );
+
                     int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
 
-                    std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre );
+                    std::tuple  < int, int*, std::string, std::string, int, int, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre, valor_heuristica );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
-                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
-                            arbol_expansiones.insert( arbol_expansiones.begin(), expansion );
-                            ultima_tupla = expansion;
-                        }
+                        //if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            //arbol_expansiones.insert( arbol_expansiones.begin(), expansion );
+                            //ultima_tupla = expansion;
+                            tuplas_pendientes.push_back( expansion );
+                        //}
                     }
                 }
             }
@@ -617,15 +651,26 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
                     pos_apuntada[0] = pos_inferior[0];
                     pos_apuntada[1] = pos_inferior[1];
 
+                    //Asumimos una sola meta para Avara;
+                    std::tuple < int, int > meta = entorno.get_metas()[0];
+                    int pos_meta[2];
+                    pos_meta[0] = (int) std::get < 0 > ( meta );
+                    pos_meta[1] = (int) std::get < 1 > ( meta ); 
+                    double valor_heuristica = sqrt( 
+                                                    pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                                    pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                                );
+
                     int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
 
-                    std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre );
+                    std::tuple  < int, int*, std::string, std::string, int, int, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre, valor_heuristica );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
-                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
-                            arbol_expansiones.insert( arbol_expansiones.begin(), expansion );
-                            ultima_tupla = expansion;
-                        }
+                        //if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            //arbol_expansiones.insert( arbol_expansiones.begin(), expansion );
+                            //ultima_tupla = expansion;
+                            tuplas_pendientes.push_back( expansion );
+                        //}
                     }
                 }
             }
@@ -637,18 +682,60 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
                     pos_apuntada[0] = pos_lateral_derecha[0];
                     pos_apuntada[1] = pos_lateral_derecha[1];
 
+                    //Asumimos una sola meta para Avara;
+                    std::tuple < int, int > meta = entorno.get_metas()[0];
+                    int pos_meta[2];
+                    pos_meta[0] = (int) std::get < 0 > ( meta );
+                    pos_meta[1] = (int) std::get < 1 > ( meta ); 
+                    double valor_heuristica = sqrt( 
+                                                    pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                                    pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                                );
+
                     int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
 
-                    std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre );
+                    std::tuple  < int, int*, std::string, std::string, int, int, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre, valor_heuristica );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
-                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
-                            arbol_expansiones.insert( arbol_expansiones.begin(), expansion );
-                            ultima_tupla = expansion;
-                        }
+                        //if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            //arbol_expansiones.insert( arbol_expansiones.begin(), expansion );
+                            //ultima_tupla = expansion;
+                            tuplas_pendientes.push_back( expansion );
+                        //}
                     }
                 }
             }
+
+            
+
+            //ASC
+            std::vector < std::tuple  < int, int*, std::string, std::string, int, int, double > > tuplas_ordenadas;
+            
+            for( int x = 0; x < tuplas_pendientes.size(); x++ ){
+                tuplas_ordenadas.push_back( tuplas_pendientes[ x ] );
+                std::cout << "FLAG; " << tuplas_pendientes.size() << " - " << tuplas_ordenadas.size() << std::endl;
+                for( int y = 0; y < tuplas_pendientes.size(); y++ ){
+                    std::cout << "x; " << x << " - " << y << std::endl;
+                    if( ( int ) std::get < 6 > ( tuplas_pendientes[ y ] ) < ( int ) std::get < 6 > ( tuplas_ordenadas[ x ] )  ){
+                        std::cout << "PLA; " << x << " - " << y << std::endl;
+                        tuplas_ordenadas.at( x ) = tuplas_ordenadas[ y ];
+                    }
+                }
+            }
+
+            arbol_expansiones.erase( arbol_expansiones.begin() );
+
+            std::cout << "CT: " << tuplas_pendientes.size() << std::endl;
+            for( int y = ( tuplas_ordenadas.size() - 1 ) ; y > -1; y-- ){
+                arbol_expansiones.insert( arbol_expansiones.begin(), tuplas_ordenadas[ y ] );
+                ultima_tupla = tuplas_ordenadas[ y ];
+            }
+
+            for( int y = 0 ; y < arbol_expansiones.size(); y++ ){
+                std::cout << "EX: " << std::get < 6 > ( arbol_expansiones[ y ] ) << " ax: " << std::get < 3 > ( arbol_expansiones[ y ] ) << std::endl;
+            }
+
+            //break;
 
             if( info_casilla == "5" ){
                 break;
@@ -669,7 +756,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
     std::cout << "Duración del algoritmo: "
               << duracion_algoritmo.count() << "s" << std::endl;
 
-    return acciones;*/
+    return acciones;
 };
 
 void Controlador_busqueda::escribir_trayecto( std::vector < std::string > acciones, Entorno entorno, Agente agente ){
