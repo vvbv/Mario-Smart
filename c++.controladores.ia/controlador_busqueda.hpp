@@ -8,6 +8,7 @@
     #include <algorithm>
     #include <fstream>
     #include <cmath>
+    #include <limits>
     #include "controlador_entorno.cpp"
     #include "controlador_agente.cpp"
     
@@ -32,6 +33,7 @@
             void set_agente( Agente agente );
 
             std::vector < std::string > jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente );
+            std::vector < std::string > jugar_busqueda_no_informada_costo_uniforme( Entorno entorno, Agente agente );
             std::vector < std::string > jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente );
             std::vector < std::string > jugar_busqueda_informada_avara( Entorno entorno, Agente agente );
             
