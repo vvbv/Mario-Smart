@@ -333,6 +333,8 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
     std::time_t tiempo_inicio = std::chrono::system_clock::to_time_t( inicio );
     std::cout << std::endl << "Inició: " << std::ctime(&tiempo_inicio) << std::endl;
 
+    //int test_counter = 20;
+
     while( info_casilla != "5" ){
 
         if( indice_controlador == -1 ){
@@ -343,23 +345,36 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
             pos_apuntada[0] = pos_actual[0];
             pos_apuntada[1] = pos_actual[1];
 
-            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0, 0, pesos[ info_casilla ], false );
+            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0, 0, 0, false );
 
             arbol_expansiones.push_back( expansion ); 
             ultima_tupla = expansion;
             indice_controlador++;
         }else{
+
+            /*if (test_counter == 0){
+                break;
+            }
+            test_counter--;*/
             
             int tmp_peso = std::numeric_limits< int >::max();
             
             for ( int p = 0; p < arbol_expansiones.size(); p++ ){
-                if( !( std::get<7>( arbol_expansiones[ p ] ) ) && ((int) std::get<6>( arbol_expansiones[ p ]) < tmp_peso ) ){
-                    tmp_peso = std::get<7>( arbol_expansiones[ p ] );
-                    indice_controlador = p;
+                if( !( (bool) std::get<7>( arbol_expansiones[ p ] )) ){
+                    //std::cout << "Peso mínimo FOR: " << std::get<6>( arbol_expansiones[ p ] ) << " Estado: " << std::to_string( std::get<7>( arbol_expansiones[ p ] ))  << " - p:" << indice_controlador << std::endl;
+                    if( ((int) std::get<6>( arbol_expansiones[ p ]) <= tmp_peso ) ){
+                        tmp_peso = (int) std::get<6>( arbol_expansiones[ p ] );
+                        indice_controlador = p;
+                        
+                    }
                 }
             }
 
+            //std::cout << "Peso mínimo: " << tmp_peso << " - p:" << indice_controlador << std::endl;
+
             ultima_tupla = arbol_expansiones[ indice_controlador ];
+            std::get<7>( ultima_tupla ) = true;
+            arbol_expansiones[ indice_controlador ] = ultima_tupla;
 
             int pos_tupla_controladora[2];
 
@@ -376,13 +391,9 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
 
             numero_nodos_expandidos++;
 
-            //std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << " [ Estado: " << std::to_string( std::get<7>( ultima_tupla ) ) << " ] " << " [ Peso " << std::to_string( std::get<6>( ultima_tupla ) )  << " ] " << std::endl;
+            //std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << " [ Estado: " << std::to_string( std::get<7>( ultima_tupla ) ) << " ] " << " [ Peso " << std::to_string( std::get<6>( ultima_tupla ) )  << " ] " << " T: " << arbol_expansiones.size() << std::endl;
             //std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
             
-           
-            std::get<7>( ultima_tupla ) = true;
-            arbol_expansiones[ indice_controlador ] = ultima_tupla;
-
             int pos_superior[2];
             int pos_lateral_izquierda[2];
             int pos_inferior[2];
@@ -417,7 +428,9 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                     int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_superior[4] ];
 
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre, peso_nodo, false );
-                    arbol_expansiones.push_back( expansion );
+                    if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
+                        arbol_expansiones.push_back( expansion );
+                    }
                 }
             }
 
@@ -436,7 +449,9 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                     int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_lateral_izquierda[4] ];
 
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre, peso_nodo, false );
-                    arbol_expansiones.push_back( expansion );
+                    if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
+                        arbol_expansiones.push_back( expansion );
+                    }
                 }
             }
             
@@ -455,7 +470,9 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                     int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_inferior[4] ];
 
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre, peso_nodo, false );
-                    arbol_expansiones.push_back( expansion );
+                    if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
+                        arbol_expansiones.push_back( expansion );
+                    }
                 }
             }
             
@@ -474,9 +491,13 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                     int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_lateral_derecha[4] ];
 
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre, peso_nodo, false );
-                    arbol_expansiones.push_back( expansion );
+                    if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
+                        arbol_expansiones.push_back( expansion );
+                    }
                 }
             }
+
+            arbol_expansiones.erase(arbol_expansiones.begin() + indice_controlador );
             
             if( info_casilla == "5" ){
                 break;
@@ -488,7 +509,9 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
     std::time_t tiempo_fin = std::chrono::system_clock::to_time_t( fin );
     std::cout << "Finalizó: " << std::ctime(&tiempo_fin) << std::endl;
 
-    std::tuple  < int, int*, std::string, std::string, int, int, int, bool > *tupla_regresion = &arbol_expansiones[ pos_meta_vector ];
+    std::vector < std::string > acciones;
+
+    /*std::tuple  < int, int*, std::string, std::string, int, int, int, bool > *tupla_regresion = &arbol_expansiones[ pos_meta_vector ];
     int *pos_regresion = std::get<1>( *tupla_regresion );
     std::string val_tupla_regresion = std::get<2>( *tupla_regresion );
     std::string accion_tupla_regresion = std::get<3>( *tupla_regresion );
@@ -526,7 +549,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
         }
        
     }while( val_tupla_regresion != "2" );
-
+    */
     std::cout << std::endl 
               << "Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
 
@@ -543,6 +566,12 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
     std::chrono::duration<double> duracion_algoritmo = fin - inicio;
     std::cout << "Duración del algoritmo: "
               << duracion_algoritmo.count() << "s" << std::endl;
+
+    /*for( int m = 0; m < arbol_expansiones.size(); m++ ){
+        if( (std::get<1>( arbol_expansiones[m] )[0] == 4)&&(std::get<1>( arbol_expansiones[m] )[1] == 3) ){
+            std::cout << " [ Peso " << std::to_string( std::get<6>( arbol_expansiones[m] ) )  << " ] " << std::to_string( std::get<7>( arbol_expansiones[m] ) ) << std::endl;
+        }
+    }*/
 
     return acciones;
             

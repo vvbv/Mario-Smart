@@ -1,7 +1,7 @@
 #include "main.hpp"
 
 int main( int argc, const char* argv[] ){
-
+    
     if( argc > 2 ){
 
         Controlador_busqueda c_general( argv[2] );
@@ -23,7 +23,6 @@ int main( int argc, const char* argv[] ){
         }else if( ( std::string ) argv[1] == "avara" ){
             //Heuristica: Distancia en linea recta. 
             c_general.jugar_busqueda_informada_avara( c_general.get_entorno(), c_general.get_agente() );
-            
         }else if( ( std::string ) argv[1] == "a_estrella" ){
 
         }else{
