@@ -305,8 +305,6 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
 
 std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_costo_uniforme( Entorno entorno, Agente agente ){
 
-    bool tiene_flor = false;
-
     std::map < std::string, int > pesos;
     pesos["0"] = 1; // Camino libre
     pesos["1"] = std::numeric_limits < int >::max(); // Muro
@@ -319,12 +317,12 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
     pos_actual[1] = entorno.get_posicion_inicial()[1]; 
 
-    std::tuple < int, int*, std::string, std::string, int, int, int, bool, int > ultima_tupla;
-    std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int > > arbol_expansiones;
+    std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool > ultima_tupla;
+    std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool > > arbol_expansiones;
      std::vector < std::tuple < int, int > > posiciones_visitadas;
 
     // Cubo dinámico
-    std::vector < std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int > > > bucket;
+    std::vector < std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool > > > bucket;
 
     std::vector < std::string > info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual, false );
     std::string info_casilla = info_entorno[4];
@@ -342,24 +340,23 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
     while( info_casilla != "5" ){
 
         if( indice_controlador == -1 ){
-            // index, posicion, información de la casilla, operador aplicado( nodo root, operador root ), ..., peso, expandido?
-            std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > expansion;
+            // index, posicion, información de la casilla, operador aplicado( nodo root, operador root ), ..., peso, expandido? flor
+            std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > expansion;
             int *pos_apuntada = new int[2]();
 
             pos_apuntada[0] = pos_actual[0];
             pos_apuntada[1] = pos_actual[1];
 
-            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0, 0, 0, false, 0 );
+            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0, 0, 0, false, 0, false );
 
             arbol_expansiones.push_back( expansion ); 
-            std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > > bucket_0;
+            std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > > bucket_0;
             bucket_0.push_back( expansion );
             bucket.push_back( bucket_0 );
 
             ultima_tupla = expansion;
             indice_controlador++;
         }else{
-
             if( bucket.size() == 0 ){
                 std::cout << "Buckets agotados" << std::endl;
                 break;
@@ -427,8 +424,13 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
             
             if( !info_entorno_casilla_superior.empty() ){
                 if( info_entorno_casilla_superior[4] != "1" ){
+                    pesos["4"] = 7;
+                    bool tiene_flor = std::get<9>( ultima_tupla );
                     if( info_entorno_casilla_superior[4] == "3" ){
                         tiene_flor = true;
+                        pesos["4"] = 1;
+                    }
+                    if( tiene_flor ){
                         pesos["4"] = 1;
                     }
                     int *pos_apuntada = new int[2]();
@@ -439,7 +441,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                     int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
                     int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_superior[4] ];
 
-                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size() );
+                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
 
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
@@ -457,7 +459,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                             if( index_bucket_tupla != -1 ){
                                 bucket[ index_bucket_tupla ].push_back( expansion );
                             }else{
-                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > > bucket_nuevo;
+                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > > bucket_nuevo;
                                 bucket_nuevo.push_back( expansion );
                                 bucket.push_back( bucket_nuevo );
                             }
@@ -469,8 +471,13 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
 
             if( !info_entorno_casilla_lateral_izquierda.empty() ){
                 if( info_entorno_casilla_lateral_izquierda[4] != "1" ){
+                    pesos["4"] = 7;
+                    bool tiene_flor = std::get<9>( ultima_tupla );
                     if( info_entorno_casilla_lateral_izquierda[4] == "3" ){
                         tiene_flor = true;
+                        pesos["4"] = 1;
+                    }
+                    if( tiene_flor ){
                         pesos["4"] = 1;
                     }
                     int *pos_apuntada = new int[2]();
@@ -481,7 +488,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                     int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
                     int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_lateral_izquierda[4] ];
 
-                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size() );
+                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
                         
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
@@ -499,7 +506,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                             if( index_bucket_tupla != -1 ){
                                 bucket[ index_bucket_tupla ].push_back( expansion );
                             }else{
-                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > > bucket_nuevo;
+                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > > bucket_nuevo;
                                 bucket_nuevo.push_back( expansion );
                                 bucket.push_back( bucket_nuevo );
                             }
@@ -512,8 +519,13 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
             
             if( !info_entorno_casilla_inferior.empty() ){
                 if( info_entorno_casilla_inferior[4] != "1" ){
+                    pesos["4"] = 7;
+                    bool tiene_flor = std::get<9>( ultima_tupla );
                     if( info_entorno_casilla_inferior[4] == "3" ){
                         tiene_flor = true;
+                        pesos["4"] = 1;
+                    }
+                    if( tiene_flor ){
                         pesos["4"] = 1;
                     }
                     int *pos_apuntada = new int[2]();
@@ -524,7 +536,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                     int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
                     int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_inferior[4] ];
 
-                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size() );
+                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
                         
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
@@ -542,7 +554,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                             if( index_bucket_tupla != -1 ){
                                 bucket[ index_bucket_tupla ].push_back( expansion );
                             }else{
-                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > > bucket_nuevo;
+                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > > bucket_nuevo;
                                 bucket_nuevo.push_back( expansion );
                                 bucket.push_back( bucket_nuevo );
                             }
@@ -555,8 +567,12 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
             
             if( !info_entorno_casilla_lateral_derecha.empty() ){
                 if( info_entorno_casilla_lateral_derecha[4] != "1" ){
+                    pesos["4"] = 7;
+                    bool tiene_flor = std::get<9>( ultima_tupla );
                     if( info_entorno_casilla_lateral_derecha[4] == "3" ){
                         tiene_flor = true;
+                    }
+                    if( tiene_flor ){
                         pesos["4"] = 1;
                     }
                     int *pos_apuntada = new int[2]();
@@ -567,7 +583,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                     int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
                     int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_lateral_derecha[4] ];
 
-                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size() );
+                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
                         
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
@@ -585,7 +601,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                             if( index_bucket_tupla != -1 ){
                                 bucket[ index_bucket_tupla ].push_back( expansion );
                             }else{
-                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > > bucket_nuevo;
+                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > > bucket_nuevo;
                                 bucket_nuevo.push_back( expansion );
                                 bucket.push_back( bucket_nuevo );
                             }
@@ -612,15 +628,12 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
     std::time_t tiempo_fin = std::chrono::system_clock::to_time_t( fin );
     std::cout << "Finalizó: " << std::ctime(&tiempo_fin) << std::endl;
 
-    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int > *tupla_regresion = &arbol_expansiones[ pos_meta_vector ];
+    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > *tupla_regresion = &arbol_expansiones[ pos_meta_vector ];
     int *pos_regresion = std::get<1>( *tupla_regresion );
     std::string val_tupla_regresion = std::get<2>( *tupla_regresion );
     std::string accion_tupla_regresion = std::get<3>( *tupla_regresion );
     int indice_padre =  std::get<4>( *tupla_regresion );
     int peso = std::get<6>( *tupla_regresion ); 
-
-    bool nodo_error = true;
-    std::string mensaje_error = " [Nodo error]";
 
     std::vector < std::string > acciones;
 
@@ -633,7 +646,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                   << accion_tupla_regresion 
                   << " Indice padre: " << indice_padre 
                   << " Peso: " << peso 
-                  << mensaje_error << std::endl;
+                  << std::endl;
         tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
                 
         pos_regresion = std::get<1>( *tupla_regresion );
@@ -644,10 +657,6 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
 
         acciones.push_back( accion_tupla_regresion );
 
-        if( nodo_error ){
-            nodo_error = false;
-            mensaje_error = "";
-        }
        
     }while( val_tupla_regresion != "2" );
     
