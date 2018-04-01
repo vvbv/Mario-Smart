@@ -1117,6 +1117,444 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
     return acciones;
 };
 
+std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_a_estrella( Entorno entorno, Agente agente ){
+
+    std::map < std::string, int > pesos;
+    pesos["0"] = 1; // Camino libre
+    pesos["1"] = std::numeric_limits < int >::max(); // Muro
+    pesos["2"] = 1; // Punto de partida
+    pesos["3"] = 1; // Flor
+    pesos["4"] = 7; // Tortuga
+    pesos["5"] = 1; // Meta
+    
+    int pos_actual[2];
+    pos_actual[0] = entorno.get_posicion_inicial()[0]; 
+    pos_actual[1] = entorno.get_posicion_inicial()[1]; 
+
+    std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > ultima_tupla;
+    std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > > arbol_expansiones;
+     std::vector < std::tuple < int, int > > posiciones_visitadas;
+
+    // Cubo dinámico
+    std::vector < std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > > > bucket;
+
+    std::vector < std::string > info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual, false );
+    std::string info_casilla = info_entorno[4];
+
+    int indice_controlador = -1;
+    int pos_meta_vector = -1;
+    int numero_nodos_expandidos = 0;
+
+    auto inicio = std::chrono::system_clock::now();
+    std::time_t tiempo_inicio = std::chrono::system_clock::to_time_t( inicio );
+    std::cout << std::endl << "Inició: " << std::ctime(&tiempo_inicio) << std::endl;
+
+    //int test_counter = 20;
+
+    while( info_casilla != "5" ){
+
+        if( indice_controlador == -1 ){
+            // index, posicion, información de la casilla, operador aplicado( nodo root, operador root ), ..., peso, expandido? flor, heuristica
+            std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > expansion;
+            int *pos_apuntada = new int[2]();
+
+            pos_apuntada[0] = pos_actual[0];
+            pos_apuntada[1] = pos_actual[1];
+
+            //Asumimos una sola meta para Avara;
+            std::tuple < int, int > meta = entorno.get_metas()[0];
+            int pos_meta[2];
+            pos_meta[0] = (int) std::get < 0 > ( meta );
+            pos_meta[1] = (int) std::get < 1 > ( meta ); 
+            double valor_heuristica = sqrt( 
+                                            pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                            pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                        );
+
+
+            expansion = std::make_tuple( 0, pos_apuntada, info_casilla, "root", 0, 0, 0, false, 0, false, valor_heuristica );
+
+            arbol_expansiones.push_back( expansion ); 
+            std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > > bucket_0;
+            bucket_0.push_back( expansion );
+            bucket.push_back( bucket_0 );
+
+            ultima_tupla = expansion;
+            indice_controlador++;
+        }else{
+            if( bucket.size() == 0 ){
+                std::cout << "Buckets agotados" << std::endl;
+                break;
+            }
+            
+            int tmp_heur_peso = std::numeric_limits< int >::max();
+            double bucket_menor = std::numeric_limits< int >::max();
+            int index_bucket_menor = -1;
+            for( int b = 0; b < bucket.size(); b++ ){
+                if( ( std::get<6>( bucket[ b ][ 0 ] ) + std::get<10>( bucket[ b ][ 0 ] ) ) <= bucket_menor ){
+                    bucket_menor = std::get<6>( bucket[ b ][ 0 ] ) + std::get<10>( bucket[ b ][ 0 ] );
+                    index_bucket_menor = b;
+                }
+            }
+
+            tmp_heur_peso = bucket_menor;
+            indice_controlador = std::get<8>( bucket[ index_bucket_menor ][ 0 ] );
+
+            bucket[ index_bucket_menor ].erase( bucket[ index_bucket_menor ].begin() );
+            if( bucket[ index_bucket_menor ].empty() ){
+                bucket.erase( bucket.begin() + index_bucket_menor  );
+            }
+
+            ultima_tupla = arbol_expansiones[ indice_controlador ];
+            std::get<7>( ultima_tupla ) = true;
+            arbol_expansiones[ indice_controlador ] = ultima_tupla;
+
+            int pos_tupla_controladora[2];
+
+            pos_tupla_controladora[0] = std::get<1>( arbol_expansiones[ indice_controlador ] )[0];
+            pos_tupla_controladora[1] = std::get<1>( arbol_expansiones[ indice_controlador ] )[1];
+
+            info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_tupla_controladora, false );
+            
+            info_casilla = info_entorno[4];
+
+            if( info_casilla == "5" ){
+                pos_meta_vector = indice_controlador;
+            }
+
+            numero_nodos_expandidos++;
+
+            //std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << " [ Estado: " << std::to_string( std::get<7>( ultima_tupla ) ) << " ] " << " [ Peso " << std::to_string( std::get<6>( ultima_tupla ) )  << " ] " << " T: " << arbol_expansiones.size() << std::endl;
+            //std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
+            
+            int pos_superior[2];
+            int pos_lateral_izquierda[2];
+            int pos_inferior[2];
+            int pos_lateral_derecha[2];
+            
+            pos_superior[0] = this->c_entorno.get_pos_entorno_arriba( pos_tupla_controladora )[0];
+            pos_superior[1] = this->c_entorno.get_pos_entorno_arriba( pos_tupla_controladora )[1];
+            pos_lateral_izquierda[0] = this->c_entorno.get_pos_entorno_izquierda( pos_tupla_controladora )[0];
+            pos_lateral_izquierda[1] = this->c_entorno.get_pos_entorno_izquierda( pos_tupla_controladora )[1];
+            pos_inferior[0] = this->c_entorno.get_pos_entorno_abajo( pos_tupla_controladora )[0];
+            pos_inferior[1] = this->c_entorno.get_pos_entorno_abajo( pos_tupla_controladora )[1];
+            pos_lateral_derecha[0] = this->c_entorno.get_pos_entorno_derecha( pos_tupla_controladora )[0];
+            pos_lateral_derecha[1] = this->c_entorno.get_pos_entorno_derecha( pos_tupla_controladora )[1];
+
+            std::vector < std::string > info_entorno_casilla_superior = this->c_entorno.get_informacion_entorno_pos( entorno, pos_superior, false );
+            std::vector < std::string > info_entorno_casilla_lateral_izquierda = this->c_entorno.get_informacion_entorno_pos( entorno, pos_lateral_izquierda, false );
+            std::vector < std::string > info_entorno_casilla_inferior = this->c_entorno.get_informacion_entorno_pos( entorno, pos_inferior, false );
+            std::vector < std::string > info_entorno_casilla_lateral_derecha = this->c_entorno.get_informacion_entorno_pos( entorno, pos_lateral_derecha, false );
+            
+            if( !info_entorno_casilla_superior.empty() ){
+                if( info_entorno_casilla_superior[4] != "1" ){
+                    pesos["4"] = 7;
+                    bool tiene_flor = std::get<9>( ultima_tupla );
+                    if( info_entorno_casilla_superior[4] == "3" ){
+                        tiene_flor = true;
+                        pesos["4"] = 1;
+                    }
+                    if( tiene_flor ){
+                        pesos["4"] = 1;
+                    }
+                    int *pos_apuntada = new int[2]();
+
+                    pos_apuntada[0] = pos_superior[0];
+                    pos_apuntada[1] = pos_superior[1];
+
+                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+                    int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_superior[4] ];
+
+                    //Asumimos una sola meta para Avara;
+                    std::tuple < int, int > meta = entorno.get_metas()[0];
+                    int pos_meta[2];
+                    pos_meta[0] = (int) std::get < 0 > ( meta );
+                    pos_meta[1] = (int) std::get < 1 > ( meta ); 
+                    double valor_heuristica = sqrt( 
+                                                    pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                                    pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                                );
+
+                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor, valor_heuristica );
+                    if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
+
+                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            arbol_expansiones.push_back( expansion );
+                            posiciones_visitadas.push_back( pos_actual_visitada );
+                            int index_bucket_tupla = -1;
+                            for ( int b = 0; b < bucket.size(); b++ ){
+                                if( (std::get<6>(bucket[b][0]) + std::get<10>(bucket[b][0])) == (peso_nodo + valor_heuristica ) ){
+                                    index_bucket_tupla = b;
+                                    break;
+                                }
+                            }
+
+                            if( index_bucket_tupla != -1 ){
+                                bucket[ index_bucket_tupla ].push_back( expansion );
+                            }else{
+                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > > bucket_nuevo;
+                                bucket_nuevo.push_back( expansion );
+                                bucket.push_back( bucket_nuevo );
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            if( !info_entorno_casilla_lateral_izquierda.empty() ){
+                if( info_entorno_casilla_lateral_izquierda[4] != "1" ){
+                    pesos["4"] = 7;
+                    bool tiene_flor = std::get<9>( ultima_tupla );
+                    if( info_entorno_casilla_lateral_izquierda[4] == "3" ){
+                        tiene_flor = true;
+                        pesos["4"] = 1;
+                    }
+                    if( tiene_flor ){
+                        pesos["4"] = 1;
+                    }
+                    int *pos_apuntada = new int[2]();
+
+                    pos_apuntada[0] = pos_lateral_izquierda[0];
+                    pos_apuntada[1] = pos_lateral_izquierda[1];
+
+                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+                    int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_lateral_izquierda[4] ];
+
+                    //Asumimos una sola meta para Avara;
+                    std::tuple < int, int > meta = entorno.get_metas()[0];
+                    int pos_meta[2];
+                    pos_meta[0] = (int) std::get < 0 > ( meta );
+                    pos_meta[1] = (int) std::get < 1 > ( meta ); 
+                    double valor_heuristica = sqrt( 
+                                                    pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                                    pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                                );
+
+                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor, valor_heuristica );
+                    if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
+                        
+                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            arbol_expansiones.push_back( expansion );
+                            posiciones_visitadas.push_back( pos_actual_visitada );
+                            int index_bucket_tupla = -1;
+                            for ( int b = 0; b < bucket.size(); b++ ){
+                                if( (std::get<6>(bucket[b][0]) + std::get<10>(bucket[b][0])) == (peso_nodo + valor_heuristica ) ){
+                                    index_bucket_tupla = b;
+                                    break;
+                                }
+                            }
+
+                            if( index_bucket_tupla != -1 ){
+                                bucket[ index_bucket_tupla ].push_back( expansion );
+                            }else{
+                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > > bucket_nuevo;
+                                bucket_nuevo.push_back( expansion );
+                                bucket.push_back( bucket_nuevo );
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            
+            if( !info_entorno_casilla_inferior.empty() ){
+                if( info_entorno_casilla_inferior[4] != "1" ){
+                    pesos["4"] = 7;
+                    bool tiene_flor = std::get<9>( ultima_tupla );
+                    if( info_entorno_casilla_inferior[4] == "3" ){
+                        tiene_flor = true;
+                        pesos["4"] = 1;
+                    }
+                    if( tiene_flor ){
+                        pesos["4"] = 1;
+                    }
+                    int *pos_apuntada = new int[2]();
+
+                    pos_apuntada[0] = pos_inferior[0];
+                    pos_apuntada[1] = pos_inferior[1];
+
+                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+                    int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_inferior[4] ];
+
+                    //Asumimos una sola meta para Avara;
+                    std::tuple < int, int > meta = entorno.get_metas()[0];
+                    int pos_meta[2];
+                    pos_meta[0] = (int) std::get < 0 > ( meta );
+                    pos_meta[1] = (int) std::get < 1 > ( meta ); 
+                    double valor_heuristica = sqrt( 
+                                                    pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                                    pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                                );
+
+                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor, valor_heuristica );
+                    if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
+                        
+                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            arbol_expansiones.push_back( expansion );
+                            posiciones_visitadas.push_back( pos_actual_visitada );
+                            int index_bucket_tupla = -1;
+                            for ( int b = 0; b < bucket.size(); b++ ){
+                                if( (std::get<6>(bucket[b][0]) + std::get<10>(bucket[b][0])) == (peso_nodo + valor_heuristica ) ){
+                                    index_bucket_tupla = b;
+                                    break;
+                                }
+                            }
+
+                            if( index_bucket_tupla != -1 ){
+                                bucket[ index_bucket_tupla ].push_back( expansion );
+                            }else{
+                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > > bucket_nuevo;
+                                bucket_nuevo.push_back( expansion );
+                                bucket.push_back( bucket_nuevo );
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            
+            if( !info_entorno_casilla_lateral_derecha.empty() ){
+                if( info_entorno_casilla_lateral_derecha[4] != "1" ){
+                    pesos["4"] = 7;
+                    bool tiene_flor = std::get<9>( ultima_tupla );
+                    if( info_entorno_casilla_lateral_derecha[4] == "3" ){
+                        tiene_flor = true;
+                    }
+                    if( tiene_flor ){
+                        pesos["4"] = 1;
+                    }
+                    int *pos_apuntada = new int[2]();
+
+                    pos_apuntada[0] = pos_lateral_derecha[0];
+                    pos_apuntada[1] = pos_lateral_derecha[1];
+
+                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+                    int peso_nodo = std::get<6>( ultima_tupla ) + pesos[ info_entorno_casilla_lateral_derecha[4] ];
+
+                    //Asumimos una sola meta para Avara;
+                    std::tuple < int, int > meta = entorno.get_metas()[0];
+                    int pos_meta[2];
+                    pos_meta[0] = (int) std::get < 0 > ( meta );
+                    pos_meta[1] = (int) std::get < 1 > ( meta ); 
+                    double valor_heuristica = sqrt( 
+                                                    pow( pos_meta[0] - pos_apuntada[0] ,2) + 
+                                                    pow( pos_meta[1] - pos_apuntada[1] ,2 ) 
+                                                );
+
+                    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor, valor_heuristica );
+                    if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
+                        
+                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            arbol_expansiones.push_back( expansion );
+                            posiciones_visitadas.push_back( pos_actual_visitada );
+                            int index_bucket_tupla = -1;
+                            for ( int b = 0; b < bucket.size(); b++ ){
+                                if( (std::get<6>(bucket[b][0]) + std::get<10>(bucket[b][0])) == (peso_nodo + valor_heuristica ) ){
+                                    index_bucket_tupla = b;
+                                    break;
+                                }
+                            }
+
+                            if( index_bucket_tupla != -1 ){
+                                bucket[ index_bucket_tupla ].push_back( expansion );
+                            }else{
+                                std::vector < std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > > bucket_nuevo;
+                                bucket_nuevo.push_back( expansion );
+                                bucket.push_back( bucket_nuevo );
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            
+            
+            /*for( int b = 0; b < bucket.size(); b++ ){
+                std::cout << " B:" << (std::get<6>( bucket[b][0] ) + std::get<10>( bucket[b][0] )) << "[ " << bucket[b].size() << " ]";
+            }
+            std::cout<<std::endl;*/
+            
+            if( info_casilla == "5" ){
+                break;
+            }
+        }
+    };    
+
+    auto fin = std::chrono::system_clock::now();
+    std::time_t tiempo_fin = std::chrono::system_clock::to_time_t( fin );
+    std::cout << "Finalizó: " << std::ctime(&tiempo_fin) << std::endl;
+
+    std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > *tupla_regresion = &arbol_expansiones[ pos_meta_vector ];
+    int *pos_regresion = std::get<1>( *tupla_regresion );
+    std::string val_tupla_regresion = std::get<2>( *tupla_regresion );
+    std::string accion_tupla_regresion = std::get<3>( *tupla_regresion );
+    int indice_padre =  std::get<4>( *tupla_regresion );
+    int peso = std::get<6>( *tupla_regresion ); 
+    double heuristica = std::get<10>( *tupla_regresion ); 
+
+    std::vector < std::string > acciones;
+
+    do{
+        
+        std::cout << " Pos: "
+                  << "[" << pos_regresion[0] << "," << pos_regresion[1] << "]" 
+                  << " Val: " << val_tupla_regresion 
+                  << " Acción previa: " 
+                  << accion_tupla_regresion 
+                  << " Indice padre: " << indice_padre 
+                  << " Peso: " << peso 
+                  << " Heuristica: " << heuristica 
+                  << " f(x): " << heuristica + peso
+                  << std::endl;
+        tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
+                
+        pos_regresion = std::get<1>( *tupla_regresion );
+        val_tupla_regresion = std::get<2>( *tupla_regresion );
+        accion_tupla_regresion = std::get<3>( *tupla_regresion );
+        indice_padre = std::get<4>( *tupla_regresion );
+        peso = std::get<6>( *tupla_regresion );
+        heuristica = std::get<10>( *tupla_regresion ); 
+
+        acciones.push_back( accion_tupla_regresion );
+
+       
+    }while( val_tupla_regresion != "2" );
+    
+    std::cout << std::endl 
+              << "Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
+
+    std::cout << "Pos de la meta en el vector: " 
+              << pos_meta_vector << std::endl;
+
+    std::cout << "Número de nodos expandidos: " 
+              << numero_nodos_expandidos << std::endl;
+
+    std::cout << "Profundidad del árbol: " 
+              << std::get<5>( arbol_expansiones[arbol_expansiones.size() - 1] ) << std::endl;
+
+
+    std::chrono::duration<double> duracion_algoritmo = fin - inicio;
+    std::cout << "Duración del algoritmo: "
+              << duracion_algoritmo.count() << "s" << std::endl;
+
+    /*for( int m = 0; m < arbol_expansiones.size(); m++ ){
+        if( (std::get<1>( arbol_expansiones[m] )[0] == 4)&&(std::get<1>( arbol_expansiones[m] )[1] == 3) ){
+            std::cout << " [ Peso " << std::to_string( std::get<6>( arbol_expansiones[m] ) )  << " ] " << std::to_string( std::get<7>( arbol_expansiones[m] ) ) << std::endl;
+        }
+    }*/
+
+    return acciones;
+            
+};
+
 void Controlador_busqueda::escribir_trayecto( std::vector < std::string > acciones, Entorno entorno, Agente agente ){
     
     std::string cabezera = "{\n";
