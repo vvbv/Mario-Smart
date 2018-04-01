@@ -19,13 +19,13 @@ int main( int argc, const char* argv[] ){
         }else if( ( std::string ) argv[1] == "costo_uniforme" ){ 
             acciones = c_general.jugar_busqueda_no_informada_costo_uniforme( c_general.get_entorno(), c_general.get_agente() );
         }else if( ( std::string ) argv[1] == "profundidad" ){
-            c_general.jugar_busqueda_no_informada_profundidad( c_general.get_entorno(), c_general.get_agente() );
+            acciones = c_general.jugar_busqueda_no_informada_profundidad( c_general.get_entorno(), c_general.get_agente() );
         }else if( ( std::string ) argv[1] == "avara" ){
             //Heuristica: Distancia en linea recta. 
-            c_general.jugar_busqueda_informada_avara( c_general.get_entorno(), c_general.get_agente() );
+            acciones = c_general.jugar_busqueda_informada_avara( c_general.get_entorno(), c_general.get_agente() );
         }else if( ( std::string ) argv[1] == "a_estrella" ){
             //Heuristica: Distancia en linea recta. 
-            c_general.jugar_busqueda_informada_a_estrella( c_general.get_entorno(), c_general.get_agente() );
+            acciones = c_general.jugar_busqueda_informada_a_estrella( c_general.get_entorno(), c_general.get_agente() );
         }else{
             return -1;
         }
