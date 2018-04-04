@@ -1611,6 +1611,14 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_a_est
                   << " Heuristica: " << heuristica 
                   << " f(x): " << heuristica + peso
                   << std::endl;
+
+        if( val_tupla_regresion == "2" ){
+            break;
+        }
+
+        acciones.push_back( accion_tupla_regresion );
+
+        
         tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
                 
         pos_regresion = std::get<1>( *tupla_regresion );
@@ -1620,8 +1628,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_a_est
         peso = std::get<6>( *tupla_regresion );
         heuristica = std::get<10>( *tupla_regresion ); 
 
-        acciones.push_back( accion_tupla_regresion );
-
+        
        
     }while( val_tupla_regresion != "2" );
     
