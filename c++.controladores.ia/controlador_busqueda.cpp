@@ -252,20 +252,27 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
     std::string accion_tupla_regresion = std::get<3>( *tupla_regresion );
     int indice_padre =  std::get<4>( *tupla_regresion );
 
-    bool nodo_error = true;
-    std::string mensaje_error = " [Nodo error]";
-
     std::vector < std::string > acciones;
 
+    bool bandera_inicio = false;
     do{
+        if( ( !bandera_inicio ) && ( val_tupla_regresion == "5" ) ){
+            bandera_inicio = true;
+        }else if( !bandera_inicio ){
+            tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
+            val_tupla_regresion = std::get<2>( *tupla_regresion );
+        }
+
+        if( !bandera_inicio ){
+            continue;
+        }
         
         std::cout << " Pos: "
                   << "[" << pos_regresion[0] << "," << pos_regresion[1] << "]" 
                   << " Val: " << val_tupla_regresion 
                   << " Acción previa: " 
                   << accion_tupla_regresion 
-                  << " Indice padre: " << indice_padre 
-                  << mensaje_error << std::endl;
+                  << " Indice padre: " << indice_padre << std::endl;
         tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
                 
         pos_regresion = std::get<1>( *tupla_regresion );
@@ -274,11 +281,6 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
         indice_padre = std::get<4>( *tupla_regresion );
 
         acciones.push_back( accion_tupla_regresion );
-
-        if( nodo_error ){
-            nodo_error = false;
-            mensaje_error = "";
-        }
        
     }while( val_tupla_regresion != "2" );
 
