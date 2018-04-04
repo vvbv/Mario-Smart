@@ -173,7 +173,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
                     pos_apuntada[0] = pos_superior[0];
                     pos_apuntada[1] = pos_superior[1];
 
-                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+                    int profundidad_tupla_padre = std::get<5>( arbol_expansiones[indice_controlador] ) + 1;
 
                     std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre );
                     if ( ultima_tupla != expansion ){
@@ -190,7 +190,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
                     pos_apuntada[0] = pos_lateral_izquierda[0];
                     pos_apuntada[1] = pos_lateral_izquierda[1];
 
-                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+                    int profundidad_tupla_padre = std::get<5>( arbol_expansiones[indice_controlador] ) + 1;
 
                     std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre );
                     if ( ultima_tupla != expansion ){
@@ -207,7 +207,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
                     pos_apuntada[0] = pos_inferior[0];
                     pos_apuntada[1] = pos_inferior[1];
 
-                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+                    int profundidad_tupla_padre = std::get<5>( arbol_expansiones[indice_controlador] ) + 1;
 
                     std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre );
                     if ( ultima_tupla != expansion ){
@@ -224,7 +224,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
                     pos_apuntada[0] = pos_lateral_derecha[0];
                     pos_apuntada[1] = pos_lateral_derecha[1];
 
-                    int profundidad_tupla_padre = std::get<5>( ultima_tupla ) + 1;
+                    int profundidad_tupla_padre = std::get<5>( arbol_expansiones[indice_controlador] ) + 1;
 
                     std::tuple  < int, int*, std::string, std::string, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre );
                     if ( ultima_tupla != expansion ){
