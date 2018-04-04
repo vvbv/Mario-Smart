@@ -91,7 +91,7 @@ void Controlador_busqueda::jugar_agente_simple(){
 
 };
 
-std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente ){
 
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
@@ -308,11 +308,11 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
     std::cout << "Duración del algoritmo: "
               << duracion_algoritmo.count() << "s" << std::endl;
 
-    return acciones;
+    return std::make_tuple( acciones, numero_nodos_expandidos, std::get<5>( arbol_expansiones[arbol_expansiones.size() - 1] ), duracion_algoritmo.count() );
             
 };
 
-std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_costo_uniforme( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_costo_uniforme( Entorno entorno, Agente agente ){
 
     std::map < std::string, int > pesos;
     pesos["0"] = 1; // Camino libre
@@ -693,11 +693,11 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
         }
     }*/
 
-    return acciones;
+    return std::make_tuple( acciones, numero_nodos_expandidos, std::get<5>( arbol_expansiones[arbol_expansiones.size() - 1] ), duracion_algoritmo.count() );
             
 };
 
-std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente ){
       
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
@@ -943,10 +943,10 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
     std::cout << "Duración del algoritmo: "
               << duracion_algoritmo.count() << "s" << std::endl;
 
-    return acciones;
+    return std::make_tuple( acciones, numero_nodos_expandidos, std::get<5>( arbol_expansiones_no_dinamico[ pos_meta_vector ] ), duracion_algoritmo.count() );
 };
 
-std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_informada_avara( Entorno entorno, Agente agente ){
     
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
@@ -1211,10 +1211,10 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
     std::cout << "Duración del algoritmo: "
               << duracion_algoritmo.count() << "s" << std::endl;
 
-    return acciones;
+    return std::make_tuple( acciones, numero_nodos_expandidos, std::get<5>(camino[ camino.size() - 1 ]), duracion_algoritmo.count() );
 };
 
-std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_a_estrella( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_informada_a_estrella( Entorno entorno, Agente agente ){
 
     std::map < std::string, int > pesos;
     pesos["0"] = 1; // Camino libre
@@ -1617,7 +1617,6 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_a_est
         }
 
         acciones.push_back( accion_tupla_regresion );
-
         
         tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
                 
@@ -1655,15 +1654,20 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_a_est
         }
     }*/
 
-    return acciones;
+    return std::make_tuple( acciones, numero_nodos_expandidos, std::get<5>( arbol_expansiones[arbol_expansiones.size() - 1] ) ,duracion_algoritmo.count() );
             
 };
 
-void Controlador_busqueda::escribir_trayecto( std::vector < std::string > acciones, Entorno entorno, Agente agente ){
+void Controlador_busqueda::escribir_informacion_json( std::tuple < std::vector < std::string >, int, int, double > informacion, Entorno entorno, Agente agente ){
     
+    std::vector < std::string > acciones = std::get< 0 > ( informacion );
+
     std::string cabezera = "{\n";
     
     cabezera += "    \"punto_partida\":[ " + std::to_string( entorno.get_posicion_inicial()[0] ) + ", " + std::to_string( entorno.get_posicion_inicial()[1] ) + " ],\n";
+    cabezera += "    \"nodos_expandidos\":" + std::to_string( std::get<1>(informacion) ) + ",\n";
+    cabezera += "    \"profundidad_arbol\":" + std::to_string( std::get<2>(informacion) ) + ",\n";
+    cabezera += "    \"tiempo_computo\":" + std::to_string( std::get<3>(informacion) ) + ",\n";
     
     std::string movimientos = "    \"movimientos\":[\n";
     for( int x = acciones.size() - 1; x >= 0 ; x-- ){
@@ -1710,6 +1714,6 @@ void Controlador_busqueda::escribir_trayecto( std::vector < std::string > accion
     
 };
 
-void Controlador_busqueda::escribir_trayecto( std::vector < std::string > acciones ){
-    this->escribir_trayecto( acciones, this->entorno, this->agente );
+void Controlador_busqueda::escribir_informacion_json(std::tuple < std::vector < std::string >, int, int, double > informacion ){
+    this->escribir_informacion_json( informacion, this->entorno, this->agente );
 };

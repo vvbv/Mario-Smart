@@ -5,7 +5,7 @@ int main( int argc, const char* argv[] ){
     if( argc > 2 ){
 
         Controlador_busqueda c_general( argv[2] );
-        std::vector < std::string > acciones;
+        std::tuple < std::vector < std::string >, int, int, double > acciones;
 
         std::cout << std::endl << "Mario - Smart" << std::endl;
         std::cout << "============="<< std::endl << std::endl;
@@ -15,21 +15,21 @@ int main( int argc, const char* argv[] ){
 
         if( ( std::string ) argv[1] == "amplitud" ){
             acciones = c_general.jugar_busqueda_no_informada_amplitud( c_general.get_entorno(), c_general.get_agente() );
-            c_general.escribir_trayecto( acciones );
+            c_general.escribir_informacion_json( acciones );
         }else if( ( std::string ) argv[1] == "costo_uniforme" ){ 
             acciones = c_general.jugar_busqueda_no_informada_costo_uniforme( c_general.get_entorno(), c_general.get_agente() );
-            c_general.escribir_trayecto( acciones );
+            c_general.escribir_informacion_json( acciones );
         }else if( ( std::string ) argv[1] == "profundidad" ){
             acciones = c_general.jugar_busqueda_no_informada_profundidad( c_general.get_entorno(), c_general.get_agente() );
-            c_general.escribir_trayecto( acciones );
+            c_general.escribir_informacion_json( acciones );
         }else if( ( std::string ) argv[1] == "avara" ){
             //Heuristica: Distancia en linea recta. 
             acciones = c_general.jugar_busqueda_informada_avara( c_general.get_entorno(), c_general.get_agente() );
-            c_general.escribir_trayecto( acciones );
+            c_general.escribir_informacion_json( acciones );
         }else if( ( std::string ) argv[1] == "a_estrella" ){
             //Heuristica: Distancia en linea recta. 
             acciones = c_general.jugar_busqueda_informada_a_estrella( c_general.get_entorno(), c_general.get_agente() );
-            c_general.escribir_trayecto( acciones );
+            c_general.escribir_informacion_json( acciones );
         }else{
             return -1;
         }
