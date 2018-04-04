@@ -25,6 +25,7 @@ int main( int argc, const char* argv[] ){
         }else if( ( std::string ) argv[1] == "avara" ){
             //Heuristica: Distancia en linea recta. 
             acciones = c_general.jugar_busqueda_informada_avara( c_general.get_entorno(), c_general.get_agente() );
+            c_general.escribir_trayecto( acciones );
         }else if( ( std::string ) argv[1] == "a_estrella" ){
             //Heuristica: Distancia en linea recta. 
             acciones = c_general.jugar_busqueda_informada_a_estrella( c_general.get_entorno(), c_general.get_agente() );

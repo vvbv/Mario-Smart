@@ -948,14 +948,13 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
 
 std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara( Entorno entorno, Agente agente ){
     
-    std::vector < std::string > acciones;
-
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
     pos_actual[1] = entorno.get_posicion_inicial()[1]; 
 
     std::tuple < int, int*, std::string, std::string, int, int, double > ultima_tupla;
     std::vector < std::tuple < int, int*, std::string, std::string, int, int, double > > arbol_expansiones;
+    std::vector < std::tuple < int, int*, std::string, std::string, int, int, double > > camino;
     std::vector < std::tuple < int, int > > posiciones_visitadas;
 
     std::vector < std::string > info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_actual, true );
@@ -1000,26 +999,23 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
 
             pos_tupla_controladora[0] = std::get<1>( arbol_expansiones[0] )[0];
             pos_tupla_controladora[1] = std::get<1>( arbol_expansiones[0] )[1];
+            camino.push_back( arbol_expansiones[0] );
 
             posiciones_visitadas.push_back( std::make_tuple( pos_tupla_controladora[0], pos_tupla_controladora[1] ) );
 
             info_entorno = this->c_entorno.get_informacion_entorno_pos( entorno, pos_tupla_controladora, true );
             info_casilla = info_entorno[4];
 
-            if( info_casilla == "5" ){
-                pos_meta_vector = arbol_expansiones.size();
-            }
-
             numero_nodos_expandidos++;
 
-            std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
+            /*std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
                       << " Info: [" << info_entorno[4] << "] " 
                       << "Información del entorno: A:" << info_entorno[0] 
                       << " I:" << info_entorno[1] 
                       << " X:" << info_entorno[2] 
                       << " D:" << info_entorno[3] 
                       << " h(n):" << std::get<6>( arbol_expansiones[ 0 ] ) 
-                      << " Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
+                      << " Tamaño del arbol: " << arbol_expansiones.size() << std::endl;*/
             
             int pos_superior[2];
             int pos_lateral_izquierda[2];
@@ -1171,6 +1167,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
             }
 
             if( info_casilla == "5" ){
+                pos_meta_vector = indice_controlador;
                 break;
             }
         }
@@ -1180,6 +1177,31 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_informada_avara
     std::time_t tiempo_fin = std::chrono::system_clock::to_time_t( fin );
     std::cout << "Finalizó: " << std::ctime(&tiempo_fin) << std::endl;
 
+    std::vector < std::string > acciones;
+
+    for( int tp = (camino.size() - 1); tp > -1 ; tp-- ){
+
+        std::tuple  < int, int*, std::string, std::string, int, int, double > *tupla_regresion = &camino[ tp ];
+        int *pos_regresion = std::get<1>( *tupla_regresion );
+        std::string val_tupla_regresion = std::get<2>( *tupla_regresion );
+        std::string accion_tupla_regresion = std::get<3>( *tupla_regresion );
+
+        if( val_tupla_regresion == "2" ){
+            break;
+        }
+        
+        std::cout << " Pos: "
+                  << "[" << pos_regresion[0] << "," << pos_regresion[1] << "]" 
+                  << " Val: " << val_tupla_regresion 
+                  << " Acción previa: " 
+                  << accion_tupla_regresion  << std::endl;
+
+        acciones.push_back( accion_tupla_regresion );
+                
+       
+    };
+
+    std::cout << std::endl;
     std::cout << "Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
 
     std::cout << "Número de nodos expandidos: " 
