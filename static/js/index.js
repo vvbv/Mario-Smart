@@ -104,7 +104,7 @@ function movimiento(datos_, posicion_inicial) {
         id_nueva = "#" + nuevaPosicion[0] + "-" + nuevaPosicion[1];
 
         posicion_inicial = nuevaPosicion;
-        $(id_nueva).css('background-color','green');
+        $(id_nueva).css('background-color','#c7ff87');
     }
 }
 
