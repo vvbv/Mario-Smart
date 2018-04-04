@@ -328,7 +328,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
 
     std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool > ultima_tupla;
     std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool > > arbol_expansiones;
-     std::vector < std::tuple < int, int > > posiciones_visitadas;
+    std::vector < std::tuple < int, int > > posiciones_visitadas;
 
     // Cubo dinámico
     std::vector < std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool > > > bucket;
@@ -344,7 +344,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
     std::time_t tiempo_inicio = std::chrono::system_clock::to_time_t( inicio );
     std::cout << std::endl << "Inició: " << std::ctime(&tiempo_inicio) << std::endl;
 
-    //int test_counter = 20;
+    int profundidad_maxima = -1;
 
     while( info_casilla != "5" ){
 
@@ -393,6 +393,10 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
             ultima_tupla = arbol_expansiones[ indice_controlador ];
             std::get<7>( ultima_tupla ) = true;
             arbol_expansiones[ indice_controlador ] = ultima_tupla;
+
+            if( profundidad_maxima < std::get<5>( ultima_tupla ) + 1 ){
+                profundidad_maxima = std::get<5>( ultima_tupla ) + 1;
+            }
 
             int pos_tupla_controladora[2];
 
@@ -680,7 +684,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
               << numero_nodos_expandidos << std::endl;
 
     std::cout << "Profundidad del árbol: " 
-              << std::get<5>( arbol_expansiones[arbol_expansiones.size() - 1] ) << std::endl;
+              << profundidad_maxima << std::endl;
 
 
     std::chrono::duration<double> duracion_algoritmo = fin - inicio;
@@ -693,7 +697,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
         }
     }*/
 
-    return std::make_tuple( acciones, numero_nodos_expandidos, std::get<5>( arbol_expansiones[arbol_expansiones.size() - 1] ), duracion_algoritmo.count() );
+    return std::make_tuple( acciones, numero_nodos_expandidos, profundidad_maxima, duracion_algoritmo.count() );
             
 };
 
@@ -714,6 +718,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
     int indice_controlador = -1;
     int pos_meta_vector = -1;
     int numero_nodos_expandidos = 0;
+    int profundidad_maxima = -1;
 
     auto inicio = std::chrono::system_clock::now();
     std::time_t tiempo_inicio = std::chrono::system_clock::to_time_t( inicio );
@@ -750,6 +755,9 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
             // Id de la tupla controladora en el arreglo
             int id_padre_no_dinamico = std::get<6>( arbol_expansiones[ indice_controlador ] );
             int profundidad_actual = std::get<5>( arbol_expansiones[ indice_controlador ] ) + 1;
+            if( profundidad_maxima < profundidad_actual ){
+                profundidad_maxima = profundidad_actual;
+            }
 
             posiciones_visitadas.push_back( std::make_tuple( pos_tupla_controladora[0], pos_tupla_controladora[1] ) );
 
@@ -937,13 +945,13 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
               << numero_nodos_expandidos << std::endl;
               
     std::cout << "Profundidad del árbol: " 
-              << std::get<5>( arbol_expansiones_no_dinamico[ pos_meta_vector ] ) << std::endl;
+              << profundidad_maxima << std::endl;
 
     std::chrono::duration<double> duracion_algoritmo = fin - inicio;
     std::cout << "Duración del algoritmo: "
               << duracion_algoritmo.count() << "s" << std::endl;
 
-    return std::make_tuple( acciones, numero_nodos_expandidos, std::get<5>( arbol_expansiones_no_dinamico[ pos_meta_vector ] ), duracion_algoritmo.count() );
+    return std::make_tuple( acciones, numero_nodos_expandidos, profundidad_maxima, duracion_algoritmo.count() );
 };
 
 std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_informada_avara( Entorno entorno, Agente agente ){
