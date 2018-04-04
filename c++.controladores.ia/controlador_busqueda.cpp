@@ -656,6 +656,9 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
                   << " Indice padre: " << indice_padre 
                   << " Peso: " << peso 
                   << std::endl;
+                  
+        acciones.push_back( accion_tupla_regresion );
+        
         tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
                 
         pos_regresion = std::get<1>( *tupla_regresion );
@@ -663,8 +666,6 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_co
         accion_tupla_regresion = std::get<3>( *tupla_regresion );
         indice_padre = std::get<4>( *tupla_regresion );
         peso = std::get<6>( *tupla_regresion );
-
-        acciones.push_back( accion_tupla_regresion );
 
        
     }while( val_tupla_regresion != "2" );

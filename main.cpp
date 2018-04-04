@@ -18,6 +18,7 @@ int main( int argc, const char* argv[] ){
             c_general.escribir_trayecto( acciones );
         }else if( ( std::string ) argv[1] == "costo_uniforme" ){ 
             acciones = c_general.jugar_busqueda_no_informada_costo_uniforme( c_general.get_entorno(), c_general.get_agente() );
+            c_general.escribir_trayecto( acciones );
         }else if( ( std::string ) argv[1] == "profundidad" ){
             acciones = c_general.jugar_busqueda_no_informada_profundidad( c_general.get_entorno(), c_general.get_agente() );
         }else if( ( std::string ) argv[1] == "avara" ){
