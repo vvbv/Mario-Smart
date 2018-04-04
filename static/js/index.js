@@ -33,7 +33,7 @@ $(document).ready(function () {
                         } else if (val == 5) {
                             img = "<img id = '" + i + "-" + j + "' style = 'width: 100% !important' class='img' src='static/images/princesa.png'></img>";
                         } else if (val == 0) {
-                            img = "<img id = '" + i + "-" + j + "' style = 'height:100 %;width: 100% !important' class='img' src='static/images/camino.png'></img>";
+                            img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src=''></img>";
                         }
                         $("#row_" + i).append("<div id = 'columna' class = 'col-md-1'>" + img + " </div>");
                         j++;
@@ -65,11 +65,13 @@ function sleep(milliseconds) {
 //FUNCION DE MOVIMIENTO
 function movimiento(datos_, posicion_inicial) {
 
+    console.log( datos_ );
+
     var id_pos;
     var nuevaPosicion;
     var id_nueva;
 
-    for (var x = 1; x < datos_.length; x++) {
+    for (var x = 0; x < datos_.length; x++) {
 
         var mov = datos_[x];
         
@@ -102,13 +104,7 @@ function movimiento(datos_, posicion_inicial) {
         id_nueva = "#" + nuevaPosicion[0] + "-" + nuevaPosicion[1];
 
         posicion_inicial = nuevaPosicion;
-        pintar(id_pos, id_nueva);
+        $(id_nueva).css('background-color','green');
     }
 }
 
-function pintar(pos_recorrido, pos_mario){
-    $(pos_recorrido).attr('src', 'static/images/camino_recorrido.png');
-    $(pos_mario).attr('src', 'static/images/mario.png');
-    sleep(200);
-    
-}
