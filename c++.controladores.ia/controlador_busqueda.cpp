@@ -255,12 +255,16 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
     std::vector < std::string > acciones;
 
     bool bandera_inicio = false;
-    do{
+    while( val_tupla_regresion != "2" ){
         if( ( !bandera_inicio ) && ( val_tupla_regresion == "5" ) ){
             bandera_inicio = true;
         }else if( !bandera_inicio ){
             tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
             val_tupla_regresion = std::get<2>( *tupla_regresion );
+            pos_regresion = std::get<1>( *tupla_regresion );
+            val_tupla_regresion = std::get<2>( *tupla_regresion );
+            accion_tupla_regresion = std::get<3>( *tupla_regresion );
+            indice_padre = std::get<4>( *tupla_regresion );
         }
 
         if( !bandera_inicio ){
@@ -273,6 +277,9 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
                   << " Acción previa: " 
                   << accion_tupla_regresion 
                   << " Indice padre: " << indice_padre << std::endl;
+
+        acciones.push_back( accion_tupla_regresion );
+
         tupla_regresion = &arbol_expansiones[std::get<4>( *tupla_regresion )];
                 
         pos_regresion = std::get<1>( *tupla_regresion );
@@ -280,9 +287,9 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_am
         accion_tupla_regresion = std::get<3>( *tupla_regresion );
         indice_padre = std::get<4>( *tupla_regresion );
 
-        acciones.push_back( accion_tupla_regresion );
+        
        
-    }while( val_tupla_regresion != "2" );
+    };
 
     std::cout << std::endl 
               << "Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
