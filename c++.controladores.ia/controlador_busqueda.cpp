@@ -749,6 +749,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
 
             // Id de la tupla controladora en el arreglo
             int id_padre_no_dinamico = std::get<6>( arbol_expansiones[ indice_controlador ] );
+            int profundidad_actual = std::get<5>( arbol_expansiones[ indice_controlador ] ) + 1;
 
             posiciones_visitadas.push_back( std::make_tuple( pos_tupla_controladora[0], pos_tupla_controladora[1] ) );
 
@@ -794,11 +795,11 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
                     int profundidad_tupla_padre = std::get<5>( arbol_expansiones[ indice_controlador ] ) + 1;
 
                     std::tuple  < int, int*, std::string, std::string, int, int > expansion_no_dinamica;
-                    expansion_no_dinamica = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", id_padre_no_dinamico, profundidad_tupla_padre );
+                    expansion_no_dinamica = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", id_padre_no_dinamico, profundidad_actual );
                     arbol_expansiones_no_dinamico.push_back( expansion_no_dinamica );
                     int id_homologo_no_dinamico = arbol_expansiones_no_dinamico.size() - 1;
 
-                    std::tuple  < int, int*, std::string, std::string, int, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", id_homologo_no_dinamico, profundidad_tupla_padre, id_homologo_no_dinamico );
+                    std::tuple  < int, int*, std::string, std::string, int, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", id_homologo_no_dinamico, profundidad_actual, id_homologo_no_dinamico );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
@@ -819,11 +820,11 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
                     int profundidad_tupla_padre = std::get<5>( arbol_expansiones[ indice_controlador ] ) + 1;
 
                     std::tuple  < int, int*, std::string, std::string, int, int > expansion_no_dinamica;
-                    expansion_no_dinamica = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", id_padre_no_dinamico, profundidad_tupla_padre );
+                    expansion_no_dinamica = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", id_padre_no_dinamico, profundidad_actual );
                     arbol_expansiones_no_dinamico.push_back( expansion_no_dinamica );
                     int id_homologo_no_dinamico = arbol_expansiones_no_dinamico.size() - 1;
 
-                    std::tuple  < int, int*, std::string, std::string, int, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", id_homologo_no_dinamico, profundidad_tupla_padre, id_homologo_no_dinamico );
+                    std::tuple  < int, int*, std::string, std::string, int, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", id_homologo_no_dinamico, profundidad_actual, id_homologo_no_dinamico );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
@@ -844,11 +845,11 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
                     int profundidad_tupla_padre = std::get<5>( arbol_expansiones[ indice_controlador ] ) + 1;
 
                     std::tuple  < int, int*, std::string, std::string, int, int > expansion_no_dinamica;
-                    expansion_no_dinamica = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", id_padre_no_dinamico, profundidad_tupla_padre );
+                    expansion_no_dinamica = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", id_padre_no_dinamico, profundidad_actual );
                     arbol_expansiones_no_dinamico.push_back( expansion_no_dinamica );
                     int id_homologo_no_dinamico = arbol_expansiones_no_dinamico.size() - 1;
 
-                    std::tuple  < int, int*, std::string, std::string, int, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", id_homologo_no_dinamico, profundidad_tupla_padre, id_homologo_no_dinamico );
+                    std::tuple  < int, int*, std::string, std::string, int, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", id_homologo_no_dinamico, profundidad_actual, id_homologo_no_dinamico );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
@@ -869,11 +870,11 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
                     int profundidad_tupla_padre = std::get<5>( arbol_expansiones[ indice_controlador ] ) + 1;
 
                     std::tuple  < int, int*, std::string, std::string, int, int > expansion_no_dinamica;
-                    expansion_no_dinamica = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", id_padre_no_dinamico, profundidad_tupla_padre );
+                    expansion_no_dinamica = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", id_padre_no_dinamico, profundidad_actual );
                     arbol_expansiones_no_dinamico.push_back( expansion_no_dinamica );
                     int id_homologo_no_dinamico = arbol_expansiones_no_dinamico.size() - 1;
 
-                    std::tuple  < int, int*, std::string, std::string, int, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", id_homologo_no_dinamico, profundidad_tupla_padre, id_homologo_no_dinamico );
+                    std::tuple  < int, int*, std::string, std::string, int, int, int > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", id_homologo_no_dinamico, profundidad_actual, id_homologo_no_dinamico );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
@@ -936,7 +937,7 @@ std::vector < std::string > Controlador_busqueda::jugar_busqueda_no_informada_pr
               << numero_nodos_expandidos << std::endl;
               
     std::cout << "Profundidad del árbol: " 
-              << std::get<5>( arbol_expansiones[ pos_meta_vector ] ) << std::endl;
+              << std::get<5>( arbol_expansiones_no_dinamico[ pos_meta_vector ] ) << std::endl;
 
     std::chrono::duration<double> duracion_algoritmo = fin - inicio;
     std::cout << "Duración del algoritmo: "
