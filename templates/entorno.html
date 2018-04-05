@@ -16,8 +16,8 @@
 
     <!-- Custom fonts for this template -->
     <link href="{{ url_for('static', filename='vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"> -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css"> -->
 
     <!-- Plugin CSS -->
     <link href="{{ url_for('static', filename='vendor/magnific-popup/magnific-popup.css') }}" rel="stylesheet" type="text/css">
@@ -54,21 +54,28 @@
                                 <a href="/costo">Busqueda por costo fijo</a>
                             </li>
                             <li>
-                                <a href="/profundidad">Busqueda  profundidad</a>
+                                <a href="/profundidad">Busqueda profundidad</a>
                             </li>
                         </ul>
                     </li>
                     <li class="dropdown nav-item mx-0 mx-lg-1">
-                        <a href="#" class="dropdown-toggle nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" data-toggle="dropdown" role="button" aria-expanded="false">Busquedas Informadas <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" data-toggle="dropdown" role="button"
+                            aria-expanded="false">Busquedas Informadas
+                            <span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu" role="menu" style="background-color: dimgrey">
-                          <li><a href="/avara">Busqueda Ávara</a></li>
-                          <li><a href="/a_estrella">Busqueda A*</a></li>
+                            <li>
+                                <a href="/avara">Busqueda Ávara</a>
+                            </li>
+                            <li>
+                                <a href="/a_estrella">Busqueda A*</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item mx-0 mx-lg-1">
-                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/entorno">Entorno</a>
-                      </li>
-                
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#">Entorno</a>
+                    </li>
+
                     <li class=" dropdown nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#footer">Equipo</a>
                     </li>
@@ -82,10 +89,20 @@
     <br>
     <section class="portfolio" id="portfolio">
         <div class="container" id="portfolio_container">
-            <h2 class="text-center text-uppercase text-secondary mb-0">Busqueda A*</h2>
+            <h2 class="text-center text-uppercase text-secondary mb-0">ENTORNO {{dato}} DEL JUEGO</h2>
             <hr class="star-dark mb-5">
-            <div class="row">
-                <div id="resultado" class="col-md-8">
+            <h3 class="text-center">Este es el entorno cargado actualmente.
+                <br> Si desea cambiarlo cargue un archivo.</h3>
+                <br>
+                <form class="text-center" method="POST">
+                    <div class="col-sm-8">
+                        <input class="" type="file" name="csv_file" id="input_csv_file" required/>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Modificar Entorno</button>
+                </form>
+            
+            <div class="row text-center">
+                <div id="resultado" class="col-md-10">
 
                 </div>
             </div>
@@ -105,12 +122,12 @@
                     <h4 class="text-uppercase mb-4">Jeison Cardona Gomez</h4>
                     <p class="lead mb-0">1325562
                     </p>
-                  </div>
-                  <div class="col-md-4 mb-5 mb-lg-0">
+                </div>
+                <div class="col-md-4 mb-5 mb-lg-0">
                     <h4 class="text-uppercase mb-4">Herney Eduardo Quintero Trochez</h4>
                     <p class="lead mb-0">1528556
                     </p>
-                  </div>
+                </div>
             </div>
         </div>
     </footer>

@@ -35,6 +35,11 @@ def avara():
 def a_estrella():
     return render_template("a_estrella.html")
 
+@app.route('/entorno',methods=['POST','GET'])
+def entorno():
+    if request.method == "POST":
+        print request 
+    return render_template("entorno.html")
 
 if __name__ == '__main__':
     app.run(debug = True, host='0.0.0.0')

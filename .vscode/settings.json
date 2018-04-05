@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.mustache": "html",
         "*.twig": "html",
         "cctype": "cpp",
         "clocale": "cpp",
@@ -37,7 +38,13 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "*.ipp": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "iostream": "cpp",
+        "istream": "cpp",
+        "memory": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp"
     },
     "code-runner.executorMap": {
         "javascript": "node",
