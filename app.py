@@ -29,7 +29,7 @@ def amplitud():
 
 @app.route('/costo')
 def costo():
-    os.system("./main costo entorno.txt")    
+    os.system("./main costo_uniforme entorno.txt")    
     return render_template("costo.html")
 
 @app.route('/profundidad')
