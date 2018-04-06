@@ -145,7 +145,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
             numero_nodos_expandidos++;
 
             if( debug_mode ){
-                
+
                 std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << std::endl;
                 std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
             
@@ -1083,7 +1083,9 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre, valor_heuristica );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
-                        tuplas_pendientes.push_back( expansion );
+                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            tuplas_pendientes.push_back( expansion );
+                        }
                     }
                 }
             }
@@ -1110,7 +1112,9 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre, valor_heuristica );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
-                        tuplas_pendientes.push_back( expansion );
+                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            tuplas_pendientes.push_back( expansion );
+                        }
                     }
                 }
             }
@@ -1137,7 +1141,9 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre, valor_heuristica );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
-                        tuplas_pendientes.push_back( expansion );
+                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            tuplas_pendientes.push_back( expansion );
+                        }
                     }
                 }
             }
@@ -1164,7 +1170,9 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre, valor_heuristica );
                     if ( ultima_tupla != expansion ){
                         std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
-                        tuplas_pendientes.push_back( expansion );
+                        if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
+                            tuplas_pendientes.push_back( expansion );
+                        }
                     }
                 }
             }
