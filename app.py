@@ -1,12 +1,18 @@
-from flask import Flask, abort, request, render_template 
+from flask import Flask, abort, request, render_template
 app = Flask(__name__)
 import json
 import os
 
-@app.route('/')
-@app.route('/index')
+
+@app.route('/',methods=['POST','GET'])
+@app.route('/index',methods=['POST','GET'])
 def index():
-    return render_template("index.html")
+    hidden = "hidden"
+    if request.method == "POST":
+        files = request.files['file']
+        files.save('./entorno.txt')
+        hidden = ""
+    return render_template("index.html", escondido=hidden)
 
 @app.route('/json_salida')
 def json_salida():
@@ -47,7 +53,6 @@ def entorno():
         files = request.files['file']
         files.save('./entorno.txt')
         os.system("./main profundidad entorno.txt")
-        print (files) 
     
     return render_template("entorno.html")
 

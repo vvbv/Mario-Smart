@@ -25,7 +25,7 @@
   <!-- Custom styles for this template -->
   <link href="{{ url_for('static', filename='css/freelancer.min.css') }}" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
- 
+
 </head>
 
 <body id="page-top">
@@ -37,96 +37,42 @@
     <div class="container">
       <div class="row">
         <div class="lado_izquierdo col-sm-5 col-md-5 col-lg-5 offset-sm-2 offset-md-2 offset-lg-2">
-            <img style="width: 350px" class="img-fluid mb-3 d-block mx-auto" src="{{ url_for('static', filename='images/titulo.png') }}"
+          <img style="width: 350px" class="img-fluid mb-3 d-block mx-auto" src="{{ url_for('static', filename='images/titulo.png') }}"
             alt="">
-            <img style="width: 350px" class="img-fluid mb-3 d-block mx-auto" src="{{ url_for('static', filename='images/mario.gif') }}"
+          <img style="width: 350px" class="img-fluid mb-3 d-block mx-auto" src="{{ url_for('static', filename='images/mario.gif') }}"
             alt="">
         </div>
-        <div class="col-sm-3 col-md-3 col-lg-3">
+        <div class="col-sm-5 col-md-5 col-lg-5">
           <div id="cargador">
-            ...
+              <a href="#" {{escondido}} class="list-group-item list-group-item-action list-group-item-success">Entorno modificado</a>
+            <form enctype="multipart/form-data" class="text-center" method="POST">
+              <input style="color:black; margin-top: 10px" class="" type="file" name="file" id="file" required/>
+              <div style="padding-top: 10px">
+                <button class="btn btn-primary" type="submit">Modificar Entorno</button>
+              </div>
+            </form>
+          </div>
+          <div id="cargador" style="color:black; margin-top:10px">
+            <h4 class="text-center">BUSQUEDAS NO INFORMADAS</h4>
+            <div class="list-group">
+              <a href="/amplitud" class="list-group-item list-group-item-action">Busqueda por amplitud</a>
+              <a href="/costo" class="list-group-item list-group-item-action">Busqueda por costo fijo</a>
+              <a href="/profundidad" class="list-group-item list-group-item-action">Busqueda por profundidad</a>
+            </div>
+          </div>
+          <div id="cargador" style="color:black; margin-top:10px">
+            <h4 class="text-center">BUSQUEDAS INFORMADAS</h4>
+            <div class="list-group">
+              <a href="/avara" class="list-group-item list-group-item-action">Busqueda ávara</a>
+              <a href="/a_estrella" class="list-group-item list-group-item-action">Busqueda A*</a>
+            </div>
           </div>
         </div>
       </div>
-      
+
       <hr class="star-light">
     </div>
   </header>
-
-  <!-- Portfolio Grid Section -->
-  <div id="sel_no_inf"></div>
-  <br>
-  <section class="portfolio" id="portfolio">
-    <div class="container" id="portfolio_container">
-      <h2 class="text-center text-uppercase text-secondary mb-0">Busquedas No Informadas</h2>
-      <hr class="star-dark mb-5">
-      <div class="row">
-        <div class="col-md-6 col-lg-4">
-          <a class="portfolio-item d-block mx-auto" href="/amplitud">
-            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                <i class="fa fa-search-plus fa-3x"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/game.png') }}" alt="">
-            <p style="font-size: 22px">BUSQUEDA POR AMPLITUD</p>
-
-          </a>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <a class="portfolio-item d-block mx-auto" href="/costo">
-            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                <i class="fa fa-search-plus fa-3x"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/safe.png') }}" alt="">
-            <p style="font-size: 22px">BUSQUEDA POR COSTO FIJO</p>
-
-          </a>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <a class="portfolio-item d-block mx-auto" href="/profundidad">
-            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                <i class="fa fa-search-plus fa-3x"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/submarine.png') }}" alt="">
-            <p style="font-size: 22px">BUSQUEDA POR PROFUNDIDAD</p>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <div id="sel_inf"></div>
-  <br>
-  <section class="bg-primary text-white mb-0" id="about">
-    <div class="container">
-      <h2 class="text-center text-uppercase text-white">Busquedas Informadas</h2>
-      <hr class="star-light mb-5">
-      <div class="row">
-        <div class="col-lg-4 ml-auto">
-          <a href="/avara">
-            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/cake.png') }}" alt="">
-          </a>
-          <p class="lead">BUSQUEDA ÁVARA</p>
-        </div>
-        <div class="col-lg-4 mr-auto">
-          <a href="/a_estrella">
-            <img class="img-fluid" src="{{ url_for('static', filename='img/portfolio/cabin.png') }}" alt="">
-          </a>
-          <p class="lead">BUSQUEDA A*</p>
-
-        </div>
-      </div>
-
-    </div>
-  </section>
-  <div id="sel_team"></div>
-  <br>
 
 
   <!-- Footer -->

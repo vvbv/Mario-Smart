@@ -14,4 +14,28 @@
         border: 5px solid #FFF !important;
         border-radius: 7px !important;
       
-      }
+	  }
+	  
+	  #cargardor{
+		  width: 100%;
+	  }
+
+	  #mainNav{
+		height: 55px;
+	  }
+	  li{
+		  padding: 10px;
+	  }
+	  #portfolio_container{
+		font-size: 10px;
+	  }
+	  h2{
+		  font-size: 20px !important;
+	  }
+	  section{
+		  padding-top: 4rem;
+	  }
+	  hr{
+		  margin-top: 10px !important;
+		  margin-bottom: 20px !important;
+	  }
