@@ -5,16 +5,17 @@ var llego = false;
 var nodos = 0;
 var arbol = 0;
 var tiempo = 0;
+var flor = false;
 
 $(document).ready(function () {
 
     pintar_mapa();
-    
+
 
 });
 
 
-function pintar_mapa(){
+function pintar_mapa() {
     var URL_MAPA = "/json_salida";
     romper = false;
     $.ajax
@@ -44,11 +45,11 @@ function pintar_mapa(){
                             posicion.push(j);
                             img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/mario.png'></img>";
                         } else if (val == 3) {
-                            img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/flor.png'></img>";
+                            img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img flor' src='static/images/flor.png'></img>";
                         } else if (val == 4) {
                             img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/tortuga.png'></img>";
                         } else if (val == 5) {
-                            
+
                             img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/princesa.png'></img>";
                         } else if (val == 0) {
                             img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src=''></img>";
@@ -67,21 +68,21 @@ function pintar_mapa(){
         );
 }
 
-$('#jugar').click(function(){
+$('#jugar').click(function () {
     $(this).slideUp();
     $('#reiniciar').attr('hidden', false);
     iterador = 0;
-    $('#nodos').text($('#nodos').text()+nodos);
-    $('#arbol').text($('#arbol').text()+arbol);
-    $('#tiempo').text($('#tiempo').text()+tiempo);
+    $('#nodos').text($('#nodos').text() + nodos);
+    $('#arbol').text($('#arbol').text() + arbol);
+    $('#tiempo').text($('#tiempo').text() + tiempo + " segundos");
     renderLoop();
 })
 
 
 function renderLoop() {
-    if(!llego){
+    if (!llego) {
         movimiento();
-        setTimeout(renderLoop, 500);    
+        setTimeout(renderLoop, 500);
     }
 }
 
@@ -95,12 +96,12 @@ function movimiento() {
     var id_pos;
     var id_nueva;
 
-    if(iterador == datos.length -1){
+    if (iterador == datos.length - 1) {
         llego = true;
         console.log("LLEGO :3");
     }
     id_pos = "#" + posicion[0] + "-" + posicion[1];
-    $(id_pos).attr('src','static/images/camino_recorrido.png');
+    $(id_pos).attr('src', 'static/images/camino_recorrido.png');
 
 
     switch (mov.accion) {
@@ -119,11 +120,24 @@ function movimiento() {
         default:
             break;
     }
-    
+
     iterador++;
 
     id_nueva = "#" + nuevaPosicion[0] + "-" + nuevaPosicion[1];
     posicion = nuevaPosicion;
-    $(id_nueva).attr('src','static/images/mario.png');
+
+    if($(id_nueva).hasClass('flor')){
+        flor =true;
+    }
+
+    if (flor) {
+        $(id_nueva).attr('src', 'static/images/mario_flor.png');
+
+    } else {
+        $(id_nueva).attr('src', 'static/images/mario.png');
+    }
+    if(llego){
+        $(id_nueva).attr('src', 'static/images/mario_princesa.jpeg');        
+    }
 
 }

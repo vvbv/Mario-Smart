@@ -1,8 +1,8 @@
 {
     "punto_partida":[ 5, 0 ],
-    "nodos_expandidos":31,
+    "nodos_expandidos":50,
     "profundidad_arbol":25,
-    "tiempo_computo":0.045747,
+    "tiempo_computo":0.019650,
     "movimientos":[
         { "accion":"abajo" },
         { "accion":"abajo" },
