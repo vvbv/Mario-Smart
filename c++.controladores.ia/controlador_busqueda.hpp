@@ -32,11 +32,11 @@
             void set_entorno( Entorno entorno );
             void set_agente( Agente agente );
 
-            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente );
-            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_no_informada_costo_uniforme( Entorno entorno, Agente agente );
-            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente );
-            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_informada_avara( Entorno entorno, Agente agente );
-            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_informada_a_estrella( Entorno entorno, Agente agente );
+            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente, bool debug_mode );
+            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_no_informada_costo_uniforme( Entorno entorno, Agente agente, bool debug_mode );
+            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente, bool debug_mode );
+            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_informada_avara( Entorno entorno, Agente agente, bool debug_mode );
+            std::tuple < std::vector < std::string >, int, int, double > jugar_busqueda_informada_a_estrella( Entorno entorno, Agente agente, bool debug_mode );
             
             void escribir_informacion_json( std::tuple < std::vector < std::string >, int, int, double > informacion, Entorno entorno, Agente agente );
             void escribir_informacion_json( std::tuple < std::vector < std::string >, int, int, double > informacion );

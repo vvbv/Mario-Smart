@@ -91,7 +91,7 @@ void Controlador_busqueda::jugar_agente_simple(){
 
 };
 
-std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_amplitud( Entorno entorno, Agente agente, bool debug_mode ){
 
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
@@ -144,8 +144,12 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
 
             numero_nodos_expandidos++;
 
-            //std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << std::endl;
-            //std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
+            if( debug_mode ){
+                
+                std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << std::endl;
+                std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
+            
+            }
             
             int pos_superior[2];
             int pos_lateral_izquierda[2];
@@ -312,7 +316,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
             
 };
 
-std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_costo_uniforme( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_costo_uniforme( Entorno entorno, Agente agente, bool debug_mode ){
 
     std::map < std::string, int > pesos;
     pesos["0"] = 1; // Camino libre
@@ -413,8 +417,10 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
 
             numero_nodos_expandidos++;
 
-            //std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << " [ Estado: " << std::to_string( std::get<7>( ultima_tupla ) ) << " ] " << " [ Peso " << std::to_string( std::get<6>( ultima_tupla ) )  << " ] " << " T: " << arbol_expansiones.size() << std::endl;
-            //std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
+            if( debug_mode ){
+                std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << " [ Estado: " << std::to_string( std::get<7>( ultima_tupla ) ) << " ] " << " [ Peso " << std::to_string( std::get<6>( ultima_tupla ) )  << " ] " << " T: " << arbol_expansiones.size() << std::endl;
+                std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
+            }
             
             int pos_superior[2];
             int pos_lateral_izquierda[2];
@@ -701,7 +707,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
             
 };
 
-std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_no_informada_profundidad( Entorno entorno, Agente agente, bool debug_mode ){
       
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
@@ -765,14 +771,18 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
             info_casilla = info_entorno[4];
             numero_nodos_expandidos++;
 
-            /*std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
+            if( debug_mode ){
+
+                std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
                       << " Info: [" << info_entorno[4] << "] " 
                       << "Información del entorno: A:" << info_entorno[0] 
                       << " I:" << info_entorno[1] 
                       << " X:" << info_entorno[2] 
                       << " D:" << info_entorno[3] 
                       << " ID P-ND:" << id_padre_no_dinamico 
-                      << " Tamaño del arbol: " << arbol_expansiones.size() << std::endl;*/
+                      << " Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
+
+            }
             
             int pos_superior[2];
             int pos_lateral_izquierda[2];
@@ -954,7 +964,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
     return std::make_tuple( acciones, numero_nodos_expandidos, profundidad_maxima, duracion_algoritmo.count() );
 };
 
-std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_informada_avara( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_informada_avara( Entorno entorno, Agente agente, bool debug_mode ){
     
     int pos_actual[2];
     pos_actual[0] = entorno.get_posicion_inicial()[0]; 
@@ -1016,14 +1026,19 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
 
             numero_nodos_expandidos++;
 
-            /*std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
+            if( debug_mode ){
+
+                std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) 
                       << " Info: [" << info_entorno[4] << "] " 
                       << "Información del entorno: A:" << info_entorno[0] 
                       << " I:" << info_entorno[1] 
                       << " X:" << info_entorno[2] 
                       << " D:" << info_entorno[3] 
                       << " h(n):" << std::get<6>( arbol_expansiones[ 0 ] ) 
-                      << " Tamaño del arbol: " << arbol_expansiones.size() << std::endl;*/
+                      << " Tamaño del arbol: " << arbol_expansiones.size() << std::endl;
+
+            }
+            
             
             int pos_superior[2];
             int pos_lateral_izquierda[2];
@@ -1222,7 +1237,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
     return std::make_tuple( acciones, numero_nodos_expandidos, std::get<5>(camino[ camino.size() - 1 ]), duracion_algoritmo.count() );
 };
 
-std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_informada_a_estrella( Entorno entorno, Agente agente ){
+std::tuple < std::vector < std::string >, int, int, double > Controlador_busqueda::jugar_busqueda_informada_a_estrella( Entorno entorno, Agente agente, bool debug_mode ){
 
     std::map < std::string, int > pesos;
     pesos["0"] = 1; // Camino libre
@@ -1329,9 +1344,13 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
 
             numero_nodos_expandidos++;
 
-            //std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << " [ Estado: " << std::to_string( std::get<7>( ultima_tupla ) ) << " ] " << " [ Peso " << std::to_string( std::get<6>( ultima_tupla ) )  << " ] " << " T: " << arbol_expansiones.size() << std::endl;
-            //std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
+            if( debug_mode ){
+
+                std::cout << std::to_string( pos_tupla_controladora[0] ) << " <> " << std::to_string( pos_tupla_controladora[1] ) << " [" << info_entorno[4] << "]" << " [ Estado: " << std::to_string( std::get<7>( ultima_tupla ) ) << " ] " << " [ Peso " << std::to_string( std::get<6>( ultima_tupla ) )  << " ] " << " T: " << arbol_expansiones.size() << std::endl;
+                std::cout << "Información del entorno: A:" << info_entorno[0] << " I:" << info_entorno[1] << " X:" << info_entorno[2] << " D:" << info_entorno[3] << std::endl;
             
+            }
+
             int pos_superior[2];
             int pos_lateral_izquierda[2];
             int pos_inferior[2];
