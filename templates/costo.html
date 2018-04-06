@@ -51,7 +51,7 @@
                                 <a href="/amplitud">Busqueda por amplitud</a>
                             </li>
                             <li>
-                                <a href="/costo">Busqueda por costo fijo</a>
+                                <a href="/costo">Busqueda por costo uniforme</a>
                             </li>
                             <li>
                                 <a href="/profundidad">Busqueda  profundidad</a>
@@ -81,12 +81,25 @@
     <div id="sel_no_inf"></div>
     <section class="portfolio" id="portfolio">
         <div class="container" id="portfolio_container">
-            <h2 class="text-center text-uppercase text-secondary mb-0">Busqueda Por Costo</h2>
+            <h2 class="text-center text-uppercase text-secondary mb-0">Busqueda Por Costo Uniforme</h2>
             <hr class="star-dark">
             <div class="row">
-                <div id="resultado" class="col-md-8">
+                <div id="resultado" class="lado_izquierdo col-sm-5 col-md-5 col-lg-5 offset-sm-2 offset-md-2 offset-lg-2">
 
                 </div>
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                <div id="cargador_black">
+                    <input id="jugar" value="JUGAR" class="btn btn-primary">
+                    <input id="reiniciar" hidden value="REINICIAR" onclick="javascript:window.location.reload();" class="btn btn-primary"/>
+                </div>
+                <div id="cargador_black">
+                    <h4 class="text-center" style="color:aliceblue">INFORMACIÓN DE LA EJECUCIÓN</h4>
+                    <div class="list-group">
+                      <p id="nodos" class="list-group-item list-group-item-action" style="color:black;font-size:14px">Nodos Expandidos: </p>
+                      <p id="arbol" class="list-group-item list-group-item-action" style="color:black;font-size:14px" >Profundidad del arbol: </p>
+                      <p id="tiempo" class="list-group-item list-group-item-action" style="color:black;font-size:14px" >Tiempo de computo: </p>
+                    </div>
+                  </div>
             </div>
         </div>
     </section>

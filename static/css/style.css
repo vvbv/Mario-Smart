@@ -20,6 +20,17 @@
 		  width: 100%;
 	  }
 
+	  #cargador_black{
+		background-color: black !important;
+        border: 5px solid black !important;
+		border-radius: 7px !important;
+		margin-top: 10px !important;
+	  }
+
+		#jugar,#reiniciar{
+			width: 100%;
+		}
+
 	  #mainNav{
 		height: 55px;
 	  }
@@ -38,4 +49,8 @@
 	  hr{
 		  margin-top: 10px !important;
 		  margin-bottom: 20px !important;
+	  }
+
+	  .dropdown-menu{
+		  margin-top: -8% !important;
 	  }

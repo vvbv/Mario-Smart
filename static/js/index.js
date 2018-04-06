@@ -2,11 +2,21 @@ var datos = [];
 var posicion = [];
 var iterador = 0;
 var llego = false;
+var nodos = 0;
+var arbol = 0;
+var tiempo = 0;
 
 $(document).ready(function () {
 
+    pintar_mapa();
+    
 
+});
+
+
+function pintar_mapa(){
     var URL_MAPA = "/json_salida";
+    romper = false;
     $.ajax
         (
         {
@@ -17,7 +27,11 @@ $(document).ready(function () {
                 data = JSON.parse(data);
                 console.log(data);
                 datos = data["movimientos"];
+                nodos = data["nodos_expandidos"];
+                arbol = data["profundidad_arbol"];
+                tiempo = data["tiempo_computo"];
 
+                $('#resultado').html('');
                 var i = 0;
                 data['mapa'].forEach(function (value, index) {
                     $("#resultado").append('<div id = "row_' + i + '" class = "row"> </div>');
@@ -51,9 +65,17 @@ $(document).ready(function () {
             }
         }
         );
+}
+
+$('#jugar').click(function(){
+    $(this).slideUp();
+    $('#reiniciar').attr('hidden', false);
     iterador = 0;
+    $('#nodos').text($('#nodos').text()+nodos);
+    $('#arbol').text($('#arbol').text()+arbol);
+    $('#tiempo').text($('#tiempo').text()+tiempo);
     renderLoop();
-});
+})
 
 
 function renderLoop() {
