@@ -33,5 +33,5 @@
 
 # Custom files
 main
-json.json
+*.json
 json.txt
