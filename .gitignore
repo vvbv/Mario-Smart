@@ -30,7 +30,3 @@
 *.exe
 *.out
 *.app
-
-# Salidas
-json.json
-json.txt

@@ -87,20 +87,22 @@
     <!-- Portfolio Grid Section -->
     <div id="sel_no_inf"></div>
     <br>
+    <br>
     <section class="portfolio" id="portfolio">
         <div class="container" id="portfolio_container">
-            <h2 class="text-center text-uppercase text-secondary mb-0">ENTORNO {{dato}} DEL JUEGO</h2>
+            <h2 class="text-center text-uppercase text-secondary mb-0">ENTORNO DEL JUEGO</h2>
             <hr class="star-dark mb-5">
             <h3 class="text-center">Este es el entorno cargado actualmente.
                 <br> Si desea cambiarlo cargue un archivo.</h3>
                 <br>
-                <form class="text-center" method="POST">
+                <form enctype="multipart/form-data" class="text-center" method="POST">
                     <div class="col-sm-8">
-                        <input class="" type="file" name="csv_file" id="input_csv_file" required/>
+                        <input class="" type="file" name="file" id="file" required/>
                     </div>
                     <button class="btn btn-primary" type="submit">Modificar Entorno</button>
                 </form>
-            
+                <br>
+
             <div class="row text-center">
                 <div id="resultado" class="col-md-10">
 

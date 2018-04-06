@@ -7,3 +7,11 @@
 		padding: 0px;
 		
 	}
+
+	.lado_izquierdo, #cargador{
+
+        background-color: #FFF !important;
+        border: 5px solid #FFF !important;
+        border-radius: 7px !important;
+      
+      }

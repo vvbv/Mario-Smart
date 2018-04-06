@@ -1,5 +1,7 @@
 var datos = [];
 var posicion = [];
+var iterador = 0;
+var llego = false;
 
 $(document).ready(function () {
 
@@ -13,6 +15,7 @@ $(document).ready(function () {
             dataType: "text",
             success: function (data) {
                 data = JSON.parse(data);
+                console.log(data);
                 datos = data["movimientos"];
 
                 var i = 0;
@@ -25,13 +28,14 @@ $(document).ready(function () {
                         } else if (val == 2) {
                             posicion.push(i);
                             posicion.push(j);
-                            img = "<img id = '" + i + "-" + j + "' style = 'width: 100% !important' class='img' src='static/images/mario.png'></img>";
+                            img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/mario.png'></img>";
                         } else if (val == 3) {
-                            img = "<img id = '" + i + "-" + j + "' style = 'width: 100% !important' class='img' src='static/images/flor.png'></img>";
+                            img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/flor.png'></img>";
                         } else if (val == 4) {
-                            img = "<img id = '" + i + "-" + j + "' style = 'width: 100% !important' class='img' src='static/images/tortuga.png'></img>";
+                            img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/tortuga.png'></img>";
                         } else if (val == 5) {
-                            img = "<img id = '" + i + "-" + j + "' style = 'width: 100% !important' class='img' src='static/images/princesa.png'></img>";
+                            
+                            img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/princesa.png'></img>";
                         } else if (val == 0) {
                             img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src=''></img>";
                         }
@@ -40,71 +44,64 @@ $(document).ready(function () {
                     })
                     i++;
                 });
-                
+
             },
             error: function (msg) {
                 console.log(msg);
             }
         }
         );
+    iterador = 0;
+    renderLoop();
 });
 
-$('#jugar_amplitud').click(function(){
-    movimiento(datos, posicion)
-});
 
-function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds) {
-            break;
-        }
+function renderLoop() {
+    if(!llego){
+        movimiento();
+        setTimeout(renderLoop, 500);    
     }
 }
+
 
 //FUNCION DE MOVIMIENTO
-function movimiento(datos_, posicion_inicial) {
 
-    console.log( datos_ );
+function movimiento() {
 
+    var mov = datos[iterador];
+    var nuevaPosicion = posicion;
     var id_pos;
-    var nuevaPosicion;
     var id_nueva;
 
-    for (var x = 0; x < datos_.length; x++) {
-
-        var mov = datos_[x];
-        
-        console.log( "POS:" + posicion_inicial )
-        console.log( mov );
-
-        nuevaPosicion = posicion_inicial;
-
-        switch ( mov.accion ) {
-            case "arriba":
-                nuevaPosicion[0]--;
-                break;
-            case "abajo":
-                nuevaPosicion[0]++;
-                break;
-            case "derecha":
-                nuevaPosicion[1]++;
-                break;
-            case "izquierda":
-                nuevaPosicion[1]--;
-                break;
-            default:
-                break;
-        }
-
-        console.log("Nuev: " + nuevaPosicion);
-        console.log( "--" );
-
-        id_pos = "#" + posicion_inicial[0] + "-" + posicion_inicial[1];
-        id_nueva = "#" + nuevaPosicion[0] + "-" + nuevaPosicion[1];
-
-        posicion_inicial = nuevaPosicion;
-        $(id_nueva).css('background-color','#c7ff87');
+    if(iterador == datos.length -1){
+        llego = true;
+        console.log("LLEGO :3");
     }
-}
+    id_pos = "#" + posicion[0] + "-" + posicion[1];
+    $(id_pos).attr('src','static/images/camino_recorrido.png');
 
+
+    switch (mov.accion) {
+        case "arriba":
+            nuevaPosicion[0]--;
+            break;
+        case "abajo":
+            nuevaPosicion[0]++;
+            break;
+        case "derecha":
+            nuevaPosicion[1]++;
+            break;
+        case "izquierda":
+            nuevaPosicion[1]--;
+            break;
+        default:
+            break;
+    }
+    
+    iterador++;
+
+    id_nueva = "#" + nuevaPosicion[0] + "-" + nuevaPosicion[1];
+    posicion = nuevaPosicion;
+    $(id_nueva).attr('src','static/images/mario.png');
+
+}

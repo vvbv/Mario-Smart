@@ -1,6 +1,7 @@
 from flask import Flask, abort, request, render_template 
 app = Flask(__name__)
 import json
+import os
 
 @app.route('/')
 @app.route('/index')
@@ -17,28 +18,37 @@ def json_salida():
 
 @app.route('/amplitud')
 def amplitud():
+    os.system("./main amplitud entorno.txt")    
     return render_template("amplitud.html")
 
 @app.route('/costo')
 def costo():
+    os.system("./main costo entorno.txt")    
     return render_template("costo.html")
 
 @app.route('/profundidad')
 def profundidad():
+    os.system("./main profundidad entorno.txt")    
     return render_template("profundidad.html")
 
 @app.route('/avara')
 def avara():
+    os.system("./main avara entorno.txt")    
     return render_template("avara.html")
 
 @app.route('/a_estrella')
 def a_estrella():
+    os.system("./main a_estrella entorno.txt")
     return render_template("a_estrella.html")
 
 @app.route('/entorno',methods=['POST','GET'])
 def entorno():
     if request.method == "POST":
-        print request 
+        files = request.files['file']
+        files.save('./entorno.txt')
+        os.system("./main profundidad entorno.txt")
+        print (files) 
+    
     return render_template("entorno.html")
 
 if __name__ == '__main__':
