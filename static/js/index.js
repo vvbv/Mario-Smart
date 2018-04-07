@@ -7,10 +7,10 @@ var arbol = 0;
 var tiempo = 0;
 var flor = false;
 
+
 $(document).ready(function () {
 
     pintar_mapa();
-
 
 });
 
@@ -126,8 +126,8 @@ function movimiento() {
     id_nueva = "#" + nuevaPosicion[0] + "-" + nuevaPosicion[1];
     posicion = nuevaPosicion;
 
-    if($(id_nueva).hasClass('flor')){
-        flor =true;
+    if ($(id_nueva).hasClass('flor')) {
+        flor = true;
     }
 
     if (flor) {
@@ -136,8 +136,19 @@ function movimiento() {
     } else {
         $(id_nueva).attr('src', 'static/images/mario.png');
     }
-    if(llego){
-        $(id_nueva).attr('src', 'static/images/mario_princesa.jpeg');        
+
+    url = window.location + "";
+    url = url.split('/')[3];
+
+    if (llego && url == "a_estrella") {
+        $(id_nueva).attr('src', 'static/images/mario_princesa.jpeg');
+    } else if (llego) {
+        $(id_nueva).attr('src', 'static/images/toad.jpeg');
+        swal({
+            title: "Gracias Mario...",
+            text: "Pero la princesa está en otro castillo.",
+            icon: "static/images/toad.jpeg",
+        });
     }
 
 }
