@@ -131,7 +131,7 @@ function movimiento() {
     }
 
     if (flor) {
-        $(id_nueva).attr('src', 'static/images/mario_flor.png');
+        $(id_nueva).attr('src', 'static/images/mario_flor_paper.png');
 
     } else {
         $(id_nueva).attr('src', 'static/images/mario.png');
