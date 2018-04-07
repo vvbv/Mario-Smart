@@ -50,7 +50,7 @@ function pintar_mapa() {
                             img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/tortuga.png'></img>";
                         } else if (val == 5) {
 
-                            img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/princesa.png'></img>";
+                            img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src='static/images/castle.png'></img>";
                         } else if (val == 0) {
                             img = "<img id = '" + i + "-" + j + "' style = 'height: 100% !important; width: 100% !important' class='img' src=''></img>";
                         }
