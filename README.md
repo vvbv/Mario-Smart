@@ -9,6 +9,7 @@ Proyecto número uno para la clase de Inteligencia Artificial, Universidad del v
 
 ## Requerimientos
 >gcc/g++ 4.9<br>
+>python 2.7
 >flask
 
 ## Versión de C++
