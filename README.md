@@ -19,7 +19,7 @@ Proyecto número uno para la clase de Inteligencia Artificial, Universidad del v
 
 ## Ejecución[ GUI ]
 
->$ pip install -r requeriments.txt<br>
+>$ pip install -r requirements.txt<br>
 >$ python app.py<br>
 >$ google-chrome <a href="http://127.0.0.1:5000">http://127.0.0.1:5000</a> || firefox <a href="http://127.0.0.1:5000">http://127.0.0.1:5000</a>
 
