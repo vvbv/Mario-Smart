@@ -332,7 +332,8 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
 
     std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool > ultima_tupla;
     std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool > > arbol_expansiones;
-    std::vector < std::tuple < int, int > > posiciones_visitadas;
+    // posx, posy, flor
+    std::vector < std::tuple < int, int, bool > > posiciones_visitadas;
 
     // Cubo dinámico
     std::vector < std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool > > > bucket;
@@ -463,7 +464,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
 
-                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        std::tuple < int, int, bool > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1], tiene_flor );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
                             arbol_expansiones.push_back( expansion );
                             posiciones_visitadas.push_back( pos_actual_visitada );
@@ -510,7 +511,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
                         
-                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        std::tuple < int, int, bool > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1], tiene_flor );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
                             arbol_expansiones.push_back( expansion );
                             posiciones_visitadas.push_back( pos_actual_visitada );
@@ -558,7 +559,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
                         
-                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        std::tuple < int, int, bool > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1], tiene_flor );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
                             arbol_expansiones.push_back( expansion );
                             posiciones_visitadas.push_back( pos_actual_visitada );
@@ -605,7 +606,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
                         
-                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        std::tuple < int, int, bool > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1], tiene_flor );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
                             arbol_expansiones.push_back( expansion );
                             posiciones_visitadas.push_back( pos_actual_visitada );
@@ -1253,7 +1254,8 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
 
     std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > ultima_tupla;
     std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > > arbol_expansiones;
-     std::vector < std::tuple < int, int > > posiciones_visitadas;
+    // Pos x, Pos y, flor
+    std::vector < std::tuple < int, int, bool > > posiciones_visitadas;
 
     // Cubo dinámico
     std::vector < std::vector < std::tuple < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > > > bucket;
@@ -1402,7 +1404,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_superior[4], "arriba", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor, valor_heuristica );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
 
-                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        std::tuple < int, int, bool > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1], tiene_flor );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
                             arbol_expansiones.push_back( expansion );
                             posiciones_visitadas.push_back( pos_actual_visitada );
@@ -1459,7 +1461,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_izquierda[4], "izquierda", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor, valor_heuristica );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
                         
-                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        std::tuple < int, int, bool > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1], tiene_flor );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
                             arbol_expansiones.push_back( expansion );
                             posiciones_visitadas.push_back( pos_actual_visitada );
@@ -1517,7 +1519,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_inferior[4], "abajo", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor, valor_heuristica );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
                         
-                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        std::tuple < int, int, bool > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1], tiene_flor );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
                             arbol_expansiones.push_back( expansion );
                             posiciones_visitadas.push_back( pos_actual_visitada );
@@ -1574,7 +1576,7 @@ std::tuple < std::vector < std::string >, int, int, double > Controlador_busqued
                     std::tuple  < int, int*, std::string, std::string, int, int, int, bool, int, bool, double > expansion = std::make_tuple( 0, pos_apuntada, info_entorno_casilla_lateral_derecha[4], "derecha", indice_controlador, profundidad_tupla_padre, peso_nodo, false, arbol_expansiones.size(), tiene_flor, valor_heuristica );
                     if ( ( std::get<1>(ultima_tupla)[0] != pos_apuntada[0] ) || ( std::get<1>(ultima_tupla)[1] != pos_apuntada[1] ) ){
                         
-                        std::tuple < int, int > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1] );
+                        std::tuple < int, int, bool > pos_actual_visitada = std::make_tuple( pos_apuntada[0], pos_apuntada[1], tiene_flor );
                         if ( std::find( posiciones_visitadas.begin(), posiciones_visitadas.end(), pos_actual_visitada ) == posiciones_visitadas.end() ){
                             arbol_expansiones.push_back( expansion );
                             posiciones_visitadas.push_back( pos_actual_visitada );
